@@ -1,49 +1,84 @@
-#include <grafo.h>
-
-void grafo::crear_grafo(char identificador, std::vector<Nodo> ns, std::vector<Arista> as){
-	id = identificador;
-	nodos = nodos;
-	aristas = as;
+// A C Program to demonstrate adjacency list representation of graphs
+ 
+#include <stdio.h>
+#include <stdlib.h>
+ 
+// A structure to represent an adjacency list node
+struct AdjListNode
+{
+    int dest;
+    struct AdjListNode* next;
+};
+ 
+// A structure to represent an adjacency list
+struct AdjList
+{
+    struct AdjListNode *head;  // pointer to head node of list
+};
+ 
+// A structure to represent a graph. A graph is an array of adjacency lists.
+// Size of array will be V (number of vertices in graph)
+struct Graph
+{
+    int V;
+    struct AdjList* array;
+};
+ 
+// A utility function to create a new adjacency list node
+struct AdjListNode* newAdjListNode(int dest)
+{
+    struct AdjListNode* newNode =
+            (struct AdjListNode*) malloc(sizeof(struct AdjListNode));
+    newNode->dest = dest;
+    newNode->next = NULL;
+    return newNode;
 }
-
-void grafo::anadir_nodos(Nodo n){
-	nodos.push_back(n);
+ 
+// A utility function that creates a graph of V vertices
+struct Graph* createGraph(int V)
+{
+    struct Graph* graph = (struct Graph*) malloc(sizeof(struct Graph));
+    graph->V = V;
+ 
+    // Create an array of adjacency lists.  Size of array will be V
+    graph->array = (struct AdjList*) malloc(V * sizeof(struct AdjList));
+ 
+     // Initialize each adjacency list as empty by making head as NULL
+    int i;
+    for (i = 0; i < V; ++i)
+        graph->array[i].head = NULL;
+ 
+    return graph;
 }
-
-void grafo::anadir_arista(Arista a){
-	aristas.push_back(a);  
+ 
+// Adds an edge to an undirected graph
+void addEdge(struct Graph* graph, int src, int dest)
+{
+    // Add an edge from src to dest.  A new node is added to the adjacency
+    // list of src.  The node is added at the begining
+    struct AdjListNode* newNode = newAdjListNode(dest);
+    newNode->next = graph->array[src].head;
+    graph->array[src].head = newNode;
+ 
+    // Since graph is undirected, add an edge from dest to src also
+    newNode = newAdjListNode(src);
+    newNode->next = graph->array[dest].head;
+    graph->array[dest].head = newNode;
 }
-
-bool grafo::existe_nodo(int id){
-	for (std::vector<T>::iterator it = nodos.begin(); it != nodos.end(); ++it)
-	{
-		if (it.id == id)
-		{
-			return true;
-		}
-	}
-	return false;
-}
-
-bool grafo::existe_arista(int n1,int n2){
-	for (std::vector<T>::iterator it = aristas.begin(); it != aristas.end(); ++it)
-	{
-		if ((n1 == it.nodo1) and (n2 == it.nodo2))
-		{
-			return true;
-		}
-	}
-	return false;
-}
-
-Arista grafo::extraer_arista(int n1, int n2){
-	if (grafo::existe_arista(n1,n2))
-	{
-		if ((n1 == it.nodo1) and (n2 == it.nodo2))
-		{
-			return it;
-		}
-	}else{
-		return NULL;
-	}
+ 
+// A utility function to print the adjacenncy list representation of graph
+void printGraph(struct Graph* graph)
+{
+    int v;
+    for (v = 0; v < graph->V; ++v)
+    {
+        struct AdjListNode* pCrawl = graph->array[v].head;
+        printf("\n Adjacency list of vertex %d\n head ", v);
+        while (pCrawl)
+        {
+            printf("-> %d", pCrawl->dest);
+            pCrawl = pCrawl->next;
+        }
+        printf("\n");
+    }
 }
