@@ -1,7 +1,37 @@
-// A C Program to demonstrate adjacency list representation of graphs
- 
+/** Universidad Simón Bolívar
+*   CI5437 - Diseño de Algoritmos I
+*   Trimestre Ene-Mar 2017
+*
+*   Proyecto I
+*   Programa Principal.
+* 
+*   Hecho por: Enrique Iglesias 11-10477
+*              Gabriel Iglesias 11-10476
+*
+*   Última modificación: 23/02/17
+*/
+
+#include <cstdlib>
+#include <iostream>
+#include <fstream>
+#include <string>
+
+#include <time.h>
+#include <unistd.h>
+#include <deque> 
+
 #include <stdio.h>
 #include <stdlib.h>
+
+using namespace std;
+
+struct Arista
+{
+    int nodo1;
+    int nodo2;
+    int costo;
+    int beneficio;
+};
  
 // A structure to represent an adjacency list node
 struct AdjListNode
@@ -9,7 +39,7 @@ struct AdjListNode
     int dest;
     struct AdjListNode* next;
 };
- 
+
 // A structure to represent an adjacency list
 struct AdjList
 {
@@ -38,10 +68,10 @@ struct AdjListNode* newAdjListNode(int dest)
 struct Graph* createGraph(int V)
 {
     struct Graph* graph = (struct Graph*) malloc(sizeof(struct Graph));
-    graph->V = V;
+    graph->V = V+1;
  
     // Create an array of adjacency lists.  Size of array will be V
-    graph->array = (struct AdjList*) malloc(V * sizeof(struct AdjList));
+    graph->array = (struct AdjList*) malloc((V+1) * sizeof(struct AdjList));
  
      // Initialize each adjacency list as empty by making head as NULL
     int i;
@@ -54,23 +84,21 @@ struct Graph* createGraph(int V)
 // Adds an edge to an undirected graph
 void addEdge(struct Graph* graph, int src, int dest)
 {
-    // Add an edge from src to dest.  A new node is added to the adjacency
-    // list of src.  The node is added at the begining
+    // 
     struct AdjListNode* newNode = newAdjListNode(dest);
     newNode->next = graph->array[src].head;
     graph->array[src].head = newNode;
- 
-    // Since graph is undirected, add an edge from dest to src also
-    newNode = newAdjListNode(src);
-    newNode->next = graph->array[dest].head;
-    graph->array[dest].head = newNode;
+    
+    // 
+    struct AdjListNode* newNode2 = newAdjListNode(src);
+    newNode2->next = graph->array[dest].head;
+    graph->array[dest].head = newNode2;
 }
  
-// A utility function to print the adjacenncy list representation of graph
 void printGraph(struct Graph* graph)
 {
     int v;
-    for (v = 0; v < graph->V; ++v)
+    for (v = 1; v < graph->V; ++v)
     {
         struct AdjListNode* pCrawl = graph->array[v].head;
         printf("\n Adjacency list of vertex %d\n head ", v);
@@ -82,3 +110,15 @@ void printGraph(struct Graph* graph)
         printf("\n");
     }
 }
+
+struct Arista extraer_arista (deque<Arista> aristas, int nodo1, int nodo2)
+{
+    for (int i = 0; i < aristas.size(); ++i)
+    {
+        if (((aristas[i].nodo1 == nodo1) && (aristas[i].nodo2 == nodo2)) || ((aristas[i].nodo1 == nodo2) && (aristas[i].nodo2 == nodo1)))
+        {
+            return aristas[i];
+        }
+    }
+    return Arista();
+};

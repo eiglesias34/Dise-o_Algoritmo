@@ -8,7 +8,7 @@
 *   Hecho por: Enrique Iglesias 11-10477
 *              Gabriel Iglesias 11-10476
 *
-*   Última modificación: 20/02/17
+*   Última modificación: 23/02/17
 */
 
 #include <cstdlib>
@@ -19,6 +19,7 @@
 #include <time.h>
 #include <unistd.h>
 #include <string>
+#include <deque>
 
 #include "grafo.cpp"
 
@@ -48,7 +49,7 @@ int main(int argc, char const *argv[]) {
 	arch_salida.open("salida.txt", ios::out);
 
 	cout << "Reading from the file" << endl;
-	string a, b, c, d;
+	string a, b, c, d, e;
 	arch_entrada >> a >> b >> c >> d >> nvertice;
 	
 	struct Graph * grafo = createGraph(nvertice);  
@@ -58,18 +59,28 @@ int main(int argc, char const *argv[]) {
 		arch_entrada >> data;
 	} 
 	cout << "\n" << data << " " << "aristas" << endl;
+	deque<Arista> aristas;
 	int nodo1, nodo2, costo, beneficio;
 	string number;
-	while (arch_entrada >> number >> nodo2 >> costo >> beneficio) {
+	while (arch_entrada >> number) {
+		cout << number << endl;
 		if (number != "number")
 		{
+			arch_entrada >> nodo2 >> costo >> beneficio;
 			nodo1 = atoi(number.c_str());
 			addEdge(grafo, nodo1, nodo2);
+			aristas.push_front(Arista());
+			aristas[0].nodo1 = nodo1;
+			aristas[0].nodo2 = nodo2;
+			aristas[0].costo = costo;
+			aristas[0].beneficio = beneficio;
+		}else{
+			arch_entrada >> a >> b >> c >> d >> e;
 		}
 	}
 
 	printGraph(grafo);
-
+	cout << (extraer_arista(aristas,1,2)).costo << endl;
 	// Se escriben los resultados en el archivo de salida.
 	arch_salida << "Ganancia" << " " << "xx" << endl;
 	arch_salida << "Camino" << " " << "..." << endl;
