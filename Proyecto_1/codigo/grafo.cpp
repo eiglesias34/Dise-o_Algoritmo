@@ -52,7 +52,6 @@ struct Graph
 {
     int V;
     struct AdjList* array;
-    deque<Arista> aristas;
 };
  
 // A utility function to create a new adjacency list node
@@ -78,7 +77,10 @@ struct Graph* createGraph(int V)
     int i;
     for (i = 0; i < V; ++i)
         graph->array[i].head = NULL;
- 
+    
+    /*deque<Arista> aristas;
+    graph->aristas = aristas;*/
+
     return graph;
 }
  
@@ -94,6 +96,16 @@ void addEdge(struct Graph* graph, int src, int dest)
     struct AdjListNode* newNode2 = newAdjListNode(src);
     newNode2->next = graph->array[dest].head;
     graph->array[dest].head = newNode2;
+}
+
+struct Arista crear_arista(int nodo1, int nodo2, int costo, int beneficio)
+{
+    struct Arista nueva_arista;
+    nueva_arista.nodo1 = nodo1;
+    nueva_arista.nodo2 = nodo2;
+    nueva_arista.costo = costo;
+    nueva_arista.beneficio = beneficio;
+    return nueva_arista;
 }
  
 void printGraph(struct Graph* graph)
