@@ -20,20 +20,41 @@
 #include <unistd.h>
 #include <string>
 #include <deque>
+#include <queue>
 
 #include "grafo.cpp"
 
 using namespace std;
 
+// Clase para comparar dos nodos en la cola de prioridades.
+class Mycomparison 
+{
+
+private:
+	bool reverse;
+
+public:
+	Mycomparison(bool param=true) {
+		reverse = param;
+	}
+
+	bool operator() (struct AdjListNode node1, struct AdjListNode node2) const {
+		if (reverse)
+			return node1.value > node2.value;
+		else
+			return node1.value < node2.value;
+	}
+};
+
 void hallarCamino(struct Graph* graph, deque<Arista> aristas) {
 
 	struct AdjListNode *start, *aux, *dest;
-	struct AdjListNode const *src;
+	const struct AdjListNode *src;
 	start = graph->array[1].head; 
 	start->value = 0;                       // Inicializamos el valor del nodo 
 	                                        // depósito a cero.
 
-	priority_queue<struct AdjListNode> pq;  // Cola de prioridades.
+	priority_queue<struct AdjListNode, std::vector<AdjListNode>, Mycomparison> pq;  // Cola de prioridades.
 	
 	// Inicializamos la Cola de prioridades.
 	for (int i = 1; i < graph->V; ++i) {

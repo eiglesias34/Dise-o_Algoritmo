@@ -47,7 +47,8 @@ struct AdjListNode
 struct AdjList
 {
     struct AdjListNode *head;  
- 
+};
+
 // Estructura que representa el grafo
 struct Graph
 {
