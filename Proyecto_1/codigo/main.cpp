@@ -46,7 +46,10 @@ int main(int argc, char const *argv[]) {
 	}
 
 	arch_entrada.open(argv[1], ios::in);
-	arch_salida.open("salida.txt", ios::out);
+	const char* s = new char [strlen(argv[1])+strlen("_salida.txt")+1];
+	strcat(const_cast<char*>(s),argv[1]);
+    strcat(const_cast<char*>(s),"_salida.txt");
+	arch_salida.open(s, ios::out);
 
 	cout << "Reading from the file" << endl;
 	string a, b, c, d, e;
