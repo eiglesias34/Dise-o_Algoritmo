@@ -52,6 +52,7 @@ struct Graph
 {
     int V;
     struct AdjList* array;
+    deque<Arista> aristas;
 };
  
 // A utility function to create a new adjacency list node

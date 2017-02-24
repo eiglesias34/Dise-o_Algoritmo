@@ -59,7 +59,7 @@ int main(int argc, char const *argv[]) {
 		arch_entrada >> data;
 	} 
 	cout << "\n" << data << " " << "aristas" << endl;
-	deque<Arista> aristas;
+	//deque<Arista> aristas;
 	int nodo1, nodo2, costo, beneficio;
 	string number;
 	while (arch_entrada >> number) {
@@ -69,18 +69,18 @@ int main(int argc, char const *argv[]) {
 			arch_entrada >> nodo2 >> costo >> beneficio;
 			nodo1 = atoi(number.c_str());
 			addEdge(grafo, nodo1, nodo2);
-			aristas.push_front(Arista());
-			aristas[0].nodo1 = nodo1;
-			aristas[0].nodo2 = nodo2;
-			aristas[0].costo = costo;
-			aristas[0].beneficio = beneficio;
+			grafo->aristas.push_front(Arista());
+			grafo->aristas[0].nodo1 = nodo1;
+			grafo->aristas[0].nodo2 = nodo2;
+			grafo->aristas[0].costo = costo;
+			grafo->aristas[0].beneficio = beneficio;
 		}else{
 			arch_entrada >> a >> b >> c >> d >> e;
 		}
 	}
 
 	printGraph(grafo);
-	cout << (extraer_arista(aristas,1,2)).costo << endl;
+	cout << (extraer_arista(grafo->aristas,1,2)).costo << endl;
 	// Se escriben los resultados en el archivo de salida.
 	arch_salida << "Ganancia" << " " << "xx" << endl;
 	arch_salida << "Camino" << " " << "..." << endl;
