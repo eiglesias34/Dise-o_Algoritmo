@@ -1,0 +1,27 @@
+#!/bin/bash
+./main ../ALBAIDA/ALBAIDAANoRPP
+./main ../ALBAIDA/ALBAIDABNoRPP
+for i in {1..9}
+do
+	./main ../CHRISTOFIDES/P0$iNoRPP
+done
+
+for i in {10..24}
+do
+	./main ../CHRISTOFIDES/P$iNoRPP
+done
+
+for i in {0..35}
+do
+	./main ../DEGREE/D$iNoRPP
+done
+
+for i in {0..35}
+do
+	./main ../GRID/G$iNoRPP
+done
+
+for i in {0..19}
+do
+	./main ../RAMDOM/R$iNoRPP
+done

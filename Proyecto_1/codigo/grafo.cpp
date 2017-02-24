@@ -25,36 +25,35 @@
 
 using namespace std;
 
+//Estructura de aristas
 struct Arista
 {
-    int nodo1;
-    int nodo2;
-    int costo;
-    int beneficio;
+    int nodo1; //primer nodo
+    int nodo2; //segundo nodo
+    int costo; //Valor del costo de la arista
+    int beneficio; //Valor del beneficio de la arista
 };
  
-// A structure to represent an adjacency list node
+// Estructura que representa nodo
 struct AdjListNode
 {
     int dest;
     struct AdjListNode* next;
 };
 
-// A structure to represent an adjacency list
+// Estructura que representa la lista de adyacencia
 struct AdjList
 {
-    struct AdjListNode *head;  // pointer to head node of list
-};
+    struct AdjListNode *head;  
  
-// A structure to represent a graph. A graph is an array of adjacency lists.
-// Size of array will be V (number of vertices in graph)
+// Estructura que representa el grafo
 struct Graph
 {
-    int V;
-    struct AdjList* array;
+    int V; //Numero de nodos
+    struct AdjList* array; //Lista de adyacencia
 };
  
-// A utility function to create a new adjacency list node
+// Funcion para crear nuevo nodo
 struct AdjListNode* newAdjListNode(int dest)
 {
     struct AdjListNode* newNode =
@@ -64,27 +63,23 @@ struct AdjListNode* newAdjListNode(int dest)
     return newNode;
 }
  
-// A utility function that creates a graph of V vertices
+// Funcion que crea grafo con V nodos
 struct Graph* createGraph(int V)
 {
     struct Graph* graph = (struct Graph*) malloc(sizeof(struct Graph));
     graph->V = V+1;
  
-    // Create an array of adjacency lists.  Size of array will be V
     graph->array = (struct AdjList*) malloc((V+1) * sizeof(struct AdjList));
  
-     // Initialize each adjacency list as empty by making head as NULL
     int i;
     for (i = 0; i < V; ++i)
         graph->array[i].head = NULL;
     
-    /*deque<Arista> aristas;
-    graph->aristas = aristas;*/
 
     return graph;
 }
  
-// Adds an edge to an undirected graph
+//Funcion que anade nodos al grafo 
 void addEdge(struct Graph* graph, int src, int dest)
 {
     // 
@@ -98,6 +93,7 @@ void addEdge(struct Graph* graph, int src, int dest)
     graph->array[dest].head = newNode2;
 }
 
+//Funcion que crea una arista
 struct Arista crear_arista(int nodo1, int nodo2, int costo, int beneficio)
 {
     struct Arista nueva_arista;
@@ -124,6 +120,7 @@ void printGraph(struct Graph* graph)
     }
 }
 
+//Funcion que extrae del deque de aristas la arista que cumple con solicitado
 struct Arista extraer_arista (deque<Arista> aristas, int nodo1, int nodo2)
 {
     for (int i = 0; i < aristas.size(); ++i)
