@@ -25,6 +25,46 @@
 
 using namespace std;
 
+void hallarCamino(struct Graph* graph, deque<Arista> aristas) {
+
+	struct AdjListNode *start, *aux, *dest;
+	struct AdjListNode const *src;
+	start = graph->array[1].head; 
+	start->value = 0;                       // Inicializamos el valor del nodo 
+	                                        // depósito a cero.
+
+	priority_queue<struct AdjListNode> pq;  // Cola de prioridades.
+	
+	// Inicializamos la Cola de prioridades.
+	for (int i = 1; i < graph->V; ++i) {
+		aux = graph->array[i].head;
+		pq.push(aux);
+	}
+
+	int beneficio, costo, total;
+	struct Arista arco;
+
+	while (!pq.empty()) {
+		
+		src = &pq.top();
+		pq.pop();
+		dest = src->next;
+		
+		while (dest) {
+
+			arco = extraer_arista(aristas, src->id, dest->id);
+			costo = arco.costo;
+			beneficio = arco.beneficio;
+			total = beneficio - costo;
+
+			if (/*(aux in pq) &&*/ (total > 0) && (total > dest->value)) {
+				dest->value  = total;
+				dest->parent = src->id;
+			}
+		}
+	}
+}
+
 int main(int argc, char const *argv[]) {
 
 	time_t inicio, fin;
@@ -40,6 +80,7 @@ int main(int argc, char const *argv[]) {
 
 	time(&inicio);      // obtiene el tiempo al iniciar el programa.
 
+	// Verficación de la ejecución del programa.
 	if (argc < 2) {
 		cerr << "Error : " << str << endl;
 		return -1;
@@ -51,12 +92,14 @@ int main(int argc, char const *argv[]) {
     strcat(const_cast<char*>(s),"_salida.txt");
 	arch_salida.open(s, ios::out);
 
+	// Lectura del Archivo
 	cout << "Reading from the file" << endl;
 	string a, b, c, d, e;
 	arch_entrada >> a >> b >> c >> d >> nvertice;
-	
-	struct Graph * grafo = createGraph(nvertice);  
 	cout << "\n" << nvertice << " " << "vertices" << endl;
+	
+	// Inicialización del Grafo.
+	struct Graph * grafo = createGraph(nvertice);  
 
 	for (int i = 0; i < 5; ++i) {
 		arch_entrada >> data;
