@@ -37,7 +37,9 @@ struct Arista
 // Estructura que representa nodo
 struct AdjListNode
 {
-    int dest;
+    int id;
+    int value;
+    int parent;
     struct AdjListNode* next;
 };
 
@@ -54,11 +56,13 @@ struct Graph
 };
  
 // Funcion para crear nuevo nodo
-struct AdjListNode* newAdjListNode(int dest)
+struct AdjListNode* newAdjListNode(int id)
 {
     struct AdjListNode* newNode =
             (struct AdjListNode*) malloc(sizeof(struct AdjListNode));
-    newNode->dest = dest;
+    newNode->id     = id;
+    newNode->value  = 0;
+    newNode->parent = 0;
     newNode->next = NULL;
     return newNode;
 }
@@ -113,7 +117,7 @@ void printGraph(struct Graph* graph)
         printf("\n Adjacency list of vertex %d\n head ", v);
         while (pCrawl)
         {
-            printf("-> %d", pCrawl->dest);
+            printf("-> %d", pCrawl->id);
             pCrawl = pCrawl->next;
         }
         printf("\n");
