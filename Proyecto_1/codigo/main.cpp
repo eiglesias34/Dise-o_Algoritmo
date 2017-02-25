@@ -46,7 +46,7 @@ public:
 	}
 };
 
-void hallarCamino(struct Graph* graph, deque<Arista> aristas) {
+/*void hallarCamino(struct Graph* graph, deque<Arista> aristas) {
 
 	struct AdjListNode *start, *aux, *dest;
 	const struct AdjListNode *src;
@@ -78,13 +78,13 @@ void hallarCamino(struct Graph* graph, deque<Arista> aristas) {
 			beneficio = arco.beneficio;
 			total = beneficio - costo;
 
-			if (/*(aux in pq) &&*/ (total > 0) && (total > dest->value)) {
+			if ((aux in pq) && (total > 0) && (total > dest->value)) {
 				dest->value  = total;
 				dest->parent = src->id;
 			}
 		}
 	}
-}
+}*/ 
 
 int main(int argc, char const *argv[]) {
 

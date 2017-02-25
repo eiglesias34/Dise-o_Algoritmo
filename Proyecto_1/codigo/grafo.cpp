@@ -46,6 +46,7 @@ struct AdjListNode
 // Estructura que representa la lista de adyacencia
 struct AdjList
 {
+    struct AdjListNode *nodeid;
     struct AdjListNode *head;  
 };
 
@@ -77,9 +78,11 @@ struct Graph* createGraph(int V)
     graph->array = (struct AdjList*) malloc((V+1) * sizeof(struct AdjList));
  
     int i;
-    for (i = 0; i < V; ++i)
+    for (i = 1; i <= V; ++i){
+        struct AdjListNode* nodoid = newAdjListNode(i);
+        graph->array[i].nodeid = nodoid;
         graph->array[i].head = NULL;
-    
+    }
 
     return graph;
 }
@@ -87,12 +90,12 @@ struct Graph* createGraph(int V)
 //Funcion que anade nodos al grafo 
 void addEdge(struct Graph* graph, int src, int dest)
 {
-    // 
+    //
     struct AdjListNode* newNode = newAdjListNode(dest);
     newNode->next = graph->array[src].head;
     graph->array[src].head = newNode;
     
-    // 
+    //
     struct AdjListNode* newNode2 = newAdjListNode(src);
     newNode2->next = graph->array[dest].head;
     graph->array[dest].head = newNode2;
@@ -115,7 +118,7 @@ void printGraph(struct Graph* graph)
     for (v = 1; v < graph->V; ++v)
     {
         struct AdjListNode* pCrawl = graph->array[v].head;
-        printf("\n Adjacency list of vertex %d\n head ", v);
+        printf("\n Adjacency list of vertex %d\n head ", graph->array[v].nodeid->id);
         while (pCrawl)
         {
             printf("-> %d", pCrawl->id);
