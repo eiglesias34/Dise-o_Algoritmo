@@ -39,10 +39,9 @@ template <typename T> bool find_and_remove(T& q, int nodo) {
 			++i;
 		} else {
 			aux1.push(aux2.top());
-			aux2.pop();
 		}
+		aux2.pop();
 	}
-
 	if (i) {
 		q.swap(aux1);
 		return true;
@@ -125,7 +124,6 @@ void hallarCamino(struct Graph* graph, deque<Arista> aristas) {
 			costo = arco.costo;
 			beneficio = arco.beneficio;
 			total = beneficio - costo;
-
 			if ((find_and_remove(pq, dest.id)) && (total > 0) && (total > dest.value)) {
 				dest.value  = total;
 				dest.parent = src.id;
