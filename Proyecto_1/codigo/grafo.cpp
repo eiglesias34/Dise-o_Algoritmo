@@ -62,7 +62,7 @@ struct AdjListNode* newAdjListNode(int id)
     struct AdjListNode* newNode =
             (struct AdjListNode*) malloc(sizeof(struct AdjListNode));
     newNode->id     = id;
-    newNode->value  = 0;
+    newNode->value  = -1;
     newNode->parent = 0;
     newNode->next = NULL;
     return newNode;

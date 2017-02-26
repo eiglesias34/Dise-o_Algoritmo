@@ -28,17 +28,27 @@
 using namespace std;
 
 // Función template para buscar un elemento.
-template <typename T> bool find(T q, int nodo) {
+template <typename T> bool find_and_remove(T& q, int nodo) {
 
-	while (!q.empty()) {
-		if (nodo == q.top().id) {
-			return true;
+	int i = 0;
+	T aux1;
+	T aux2 = q;
+
+	while (!aux2.empty()) {
+		if (nodo == aux2.top().id) {
+			++i;
 		} else {
-			q.pop();
+			aux1.push(aux2.top());
+			aux2.pop();
 		}
 	}
 
-	return false;
+	if (i) {
+		q.swap(aux1);
+		return true;
+	} else {
+		return false;
+	}
 }
 
 // Función template para imprimir una cola.
@@ -75,7 +85,7 @@ void hallarCamino(struct Graph* graph, deque<Arista> aristas) {
 	struct AdjListNode *start;
 	struct AdjListNode aux, src, dest;
 
-	start = graph->array[1].head; 
+	start = graph->array[1].nodeid; 
 	start->value = 0;                       // Inicializamos el valor del nodo 
 	                                        // depósito a cero.
 
@@ -84,12 +94,12 @@ void hallarCamino(struct Graph* graph, deque<Arista> aristas) {
 	// Inicializamos la Cola de prioridades.
 	for (int i = 1; i < graph->V; ++i) {
 		aux = *(graph->array[i].nodeid);
-		cout << aux.id << " ";
+		//cout << aux.id << " ";
 		pq.push(aux);
 	}
 
-	cout << "\n";
-	print_queue(pq);
+	//cout << endl;
+	//print_queue(pq);
 
 	// cout << find(pq, 4) << endl;
 	// cout << find(pq, 8) << endl;
@@ -101,6 +111,14 @@ void hallarCamino(struct Graph* graph, deque<Arista> aristas) {
 		
 		src = pq.top();
 		pq.pop();
+
+		// Imprime el camino recorrido.
+		if (src.parent != 0) {
+			cout << src.id << " ";
+		}
+
+		//Calcula el beneficio que se obtiene al ir a cada nodo adyacente 
+		//del recien sacado de la cola
 		dest = *(graph->array[src.id].head);
 		while (dest.next != NULL) {
 			arco = extraer_arista(aristas, src.id, dest.id);
@@ -108,7 +126,7 @@ void hallarCamino(struct Graph* graph, deque<Arista> aristas) {
 			beneficio = arco.beneficio;
 			total = beneficio - costo;
 
-			if ((find(pq, dest.id)) && (total > 0) && (total > dest.value)) {
+			if ((find_and_remove(pq, dest.id)) && (total > 0) && (total > dest.value)) {
 				dest.value  = total;
 				dest.parent = src.id;
 			}
@@ -116,6 +134,8 @@ void hallarCamino(struct Graph* graph, deque<Arista> aristas) {
 			dest = *(dest.next);
 		}
 	}
+
+	cout << endl;
 } 
 
 int main(int argc, char const *argv[]) {
