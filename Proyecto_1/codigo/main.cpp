@@ -43,7 +43,7 @@ template <typename T> bool find_and_remove(T& q, int nodo) {
 		aux2.pop();
 	}
 	if (i) {
-		q.swap(aux1);
+		q = aux1;
 		return true;
 	} else {
 		return false;
@@ -82,7 +82,8 @@ class Mycomparison {
 void hallarCamino(struct Graph* graph, deque<Arista> aristas) {
 
 	struct AdjListNode *start;
-	struct AdjListNode aux, src, dest;
+	struct AdjListNode aux, src; 
+	struct AdjListNode* dest;
 
 	start = graph->array[1].nodeid; 
 	start->value = 0;                       // Inicializamos el valor del nodo 
@@ -118,19 +119,20 @@ void hallarCamino(struct Graph* graph, deque<Arista> aristas) {
 
 		//Calcula el beneficio que se obtiene al ir a cada nodo adyacente 
 		//del recien sacado de la cola
-		dest = *(graph->array[src.id].head);
-		while (dest.next != NULL) {
-			arco = extraer_arista(aristas, src.id, dest.id);
+		dest = graph->array[src.id].head;
+		while (dest) {
+			arco = extraer_arista(aristas, src.id, dest->id);
 			costo = arco.costo;
 			beneficio = arco.beneficio;
 			total = beneficio - costo;
-			if ((find_and_remove(pq, dest.id)) && (total > 0) && (total > dest.value)) {
-				dest.value  = total;
-				dest.parent = src.id;
+			if ((find_and_remove(pq, dest->id)) && (total > 0) && (total > dest->value)) {
+				dest->value  = total;
+				dest->parent = src.id;
 			}
 
-			dest = *(dest.next);
+			dest = dest->next;
 		}
+		cout << src.id << endl;
 	}
 
 	cout << endl;
