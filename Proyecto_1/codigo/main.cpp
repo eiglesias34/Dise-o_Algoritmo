@@ -101,10 +101,8 @@ void hallarCamino(struct Graph* graph, deque<Arista> aristas) {
 		
 		src = pq.top();
 		pq.pop();
-		dest = *(src.next);
-		
+		dest = *(graph->array[src.id].head);
 		while (dest.next != NULL) {
-
 			arco = extraer_arista(aristas, src.id, dest.id);
 			costo = arco.costo;
 			beneficio = arco.beneficio;
