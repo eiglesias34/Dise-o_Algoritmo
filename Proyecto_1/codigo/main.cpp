@@ -12,44 +12,69 @@
 */
 
 #include <cstdlib>
-#include <iostream>
 #include <fstream>
+#include <iostream>
 #include <string>
-
-#include <time.h>
-#include <unistd.h>
-#include <string>
+#include <vector>
 #include <deque>
 #include <queue>
+
+#include <time.h>
+#include <string.h>
+#include <unistd.h>
 
 #include "grafo.cpp"
 
 using namespace std;
 
+// Función template para buscar un elemento.
+template <typename T> bool find(T q, int nodo) {
+
+	while (!q.empty()) {
+		if (nodo == q.top().id) {
+			return true;
+		} else {
+			q.pop();
+		}
+	}
+
+	return false;
+}
+
+// Función template para imprimir una cola.
+template <typename T> void print_queue(T q) {
+    
+    while (!q.empty()) {
+        cout << q.top().id << " " << q.top().value << " ";
+        q.pop();
+    }
+    std::cout << '\n';
+}
+
 // Clase para comparar dos nodos en la cola de prioridades.
-class Mycomparison 
-{
+class Mycomparison {
 
-private:
-	bool reverse;
+	private:
+		bool reverse;
 
-public:
-	Mycomparison(bool param=true) {
-		reverse = param;
-	}
+	public:
+		Mycomparison(const bool& param=false) {
+			reverse = param;
+		}
 
-	bool operator() (struct AdjListNode node1, struct AdjListNode node2) const {
-		if (reverse)
-			return node1.value > node2.value;
-		else
-			return node1.value < node2.value;
-	}
+		bool operator() (const struct AdjListNode& node1, const struct AdjListNode& node2) const {
+			if (reverse)
+				return node1.value > node2.value;
+			else
+				return node1.value < node2.value;
+		}
 };
 
-/*void hallarCamino(struct Graph* graph, deque<Arista> aristas) {
+void hallarCamino(struct Graph* graph, deque<Arista> aristas) {
 
-	struct AdjListNode *start, *aux, *dest;
-	const struct AdjListNode *src;
+	struct AdjListNode *start;
+	struct AdjListNode aux, src, dest;
+
 	start = graph->array[1].head; 
 	start->value = 0;                       // Inicializamos el valor del nodo 
 	                                        // depósito a cero.
@@ -58,33 +83,42 @@ public:
 	
 	// Inicializamos la Cola de prioridades.
 	for (int i = 1; i < graph->V; ++i) {
-		aux = graph->array[i].head;
+		aux = *(graph->array[i].nodeid);
+		cout << aux.id << " ";
 		pq.push(aux);
 	}
+
+	cout << "\n";
+	print_queue(pq);
+
+	// cout << find(pq, 4) << endl;
+	// cout << find(pq, 8) << endl;
 
 	int beneficio, costo, total;
 	struct Arista arco;
 
 	while (!pq.empty()) {
 		
-		src = &pq.top();
+		src = pq.top();
 		pq.pop();
-		dest = src->next;
+		dest = *(src.next);
 		
-		while (dest) {
+		while (dest.next != NULL) {
 
-			arco = extraer_arista(aristas, src->id, dest->id);
+			arco = extraer_arista(aristas, src.id, dest.id);
 			costo = arco.costo;
 			beneficio = arco.beneficio;
 			total = beneficio - costo;
 
-			if ((aux in pq) && (total > 0) && (total > dest->value)) {
-				dest->value  = total;
-				dest->parent = src->id;
+			if ((find(pq, dest.id)) && (total > 0) && (total > dest.value)) {
+				dest.value  = total;
+				dest.parent = src.id;
 			}
+
+			dest = *(dest.next);
 		}
 	}
-}*/ 
+} 
 
 int main(int argc, char const *argv[]) {
 
@@ -97,7 +131,7 @@ int main(int argc, char const *argv[]) {
 	char str[] = "Debe especificar un archivo de entrada.";
 	char data[10];
     char line;
-    int nvertice;
+    int nvertices, nlados;
 
 	time(&inicio);      // obtiene el tiempo al iniciar el programa.
 
@@ -107,28 +141,35 @@ int main(int argc, char const *argv[]) {
 		return -1;
 	}
 
-	arch_entrada.open(argv[1], ios::in);
 	const char* s = new char [strlen(argv[1])+strlen("_salida.txt")+1];
 	strcat(const_cast<char*>(s),argv[1]);
     strcat(const_cast<char*>(s),"_salida.txt");
+	
+	arch_entrada.open(argv[1], ios::in);
 	arch_salida.open(s, ios::out);
 
 	// Lectura del Archivo
-	cout << "Reading from the file" << endl;
 	string a, b, c, d, e;
-	arch_entrada >> a >> b >> c >> d >> nvertice;
-	cout << "\n" << nvertice << " " << "vertices" << endl;
 	
-	// Inicialización del Grafo.
-	struct Graph * grafo = createGraph(nvertice);  
+	cout << "Reading from the file" << endl;
+	
+	arch_entrada >> a >> b >> c >> d >> nvertices;
+	cout << "\n" << nvertices << " " << "vertices" << endl; 
 
-	for (int i = 0; i < 5; ++i) {
-		arch_entrada >> data;
-	} 
-	cout << "\n" << data << " " << "aristas" << endl;
-	deque<Arista> aristas;
+	// for (int i = 0; i < 5; ++i) {
+	// 	arch_entrada >> data;
+	// }
+
+	arch_entrada >> a >> b >> c >> d >> nlados;
+	cout << "\n" << nlados << " " << "aristas" << endl;
+
+	// Inicialización del Grafo.
+	struct Graph * grafo = createGraph(nvertices); 
+	
 	int nodo1, nodo2, costo, beneficio;
+	deque<Arista> aristas;
 	string number;
+	
 	while (arch_entrada >> number) {
 		//cout << number << endl;
 		if (number != "number")
@@ -143,7 +184,11 @@ int main(int argc, char const *argv[]) {
 	}
 
 	printGraph(grafo);
-	cout << (extraer_arista(aristas,1,2)).costo << endl;
+
+	hallarCamino(grafo, aristas);
+	
+	//cout << (extraer_arista(aristas,1,2)).costo << endl;
+	
 	// Se escriben los resultados en el archivo de salida.
 	arch_salida << "Ganancia" << " " << "xx" << endl;
 	arch_salida << "Camino" << " " << "..." << endl;

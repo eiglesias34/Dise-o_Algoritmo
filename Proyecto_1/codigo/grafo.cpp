@@ -3,7 +3,7 @@
 *   Trimestre Ene-Mar 2017
 *
 *   Proyecto I
-*   Programa Principal.
+*   Archivo con las estructuras para nodos, arcos y grafo.
 * 
 *   Hecho por: Enrique Iglesias 11-10477
 *              Gabriel Iglesias 11-10476
@@ -12,20 +12,19 @@
 */
 
 #include <cstdlib>
-#include <iostream>
 #include <fstream>
+#include <iostream>
+#include <deque> 
 #include <string>
 
 #include <time.h>
-#include <unistd.h>
-#include <deque> 
-
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 
 using namespace std;
 
-//Estructura de aristas
+//Estructura para representar una arista
 struct Arista
 {
     int nodo1; //primer nodo
@@ -34,7 +33,7 @@ struct Arista
     int beneficio; //Valor del beneficio de la arista
 };
  
-// Estructura que representa nodo
+//Estructura para representar nodo
 struct AdjListNode
 {
     int id;
@@ -43,21 +42,21 @@ struct AdjListNode
     struct AdjListNode* next;
 };
 
-// Estructura que representa la lista de adyacencia
+//Estructura para representa la lista de adyacencia
 struct AdjList
 {
     struct AdjListNode *nodeid;
     struct AdjListNode *head;  
 };
 
-// Estructura que representa el grafo
+//Estructura para representa un grafo
 struct Graph
 {
     int V; //Numero de nodos
     struct AdjList* array; //Lista de adyacencia
 };
  
-// Funcion para crear nuevo nodo
+//Función para crear nuevo nodo
 struct AdjListNode* newAdjListNode(int id)
 {
     struct AdjListNode* newNode =
@@ -69,7 +68,7 @@ struct AdjListNode* newAdjListNode(int id)
     return newNode;
 }
  
-// Funcion que crea grafo con V nodos
+//Función que crea grafo con V nodos
 struct Graph* createGraph(int V)
 {
     struct Graph* graph = (struct Graph*) malloc(sizeof(struct Graph));
@@ -87,7 +86,7 @@ struct Graph* createGraph(int V)
     return graph;
 }
  
-//Funcion que anade nodos al grafo 
+//Funcion que añade nodos al grafo 
 void addEdge(struct Graph* graph, int src, int dest)
 {
     //
@@ -101,7 +100,7 @@ void addEdge(struct Graph* graph, int src, int dest)
     graph->array[dest].head = newNode2;
 }
 
-//Funcion que crea una arista
+//Función que crea una arista
 struct Arista crear_arista(int nodo1, int nodo2, int costo, int beneficio)
 {
     struct Arista nueva_arista;
@@ -111,7 +110,8 @@ struct Arista crear_arista(int nodo1, int nodo2, int costo, int beneficio)
     nueva_arista.beneficio = beneficio;
     return nueva_arista;
 }
- 
+
+//Función para imprimir un grafo representado por listas de adyacencia 
 void printGraph(struct Graph* graph)
 {
     int v;
@@ -128,7 +128,7 @@ void printGraph(struct Graph* graph)
     }
 }
 
-//Funcion que extrae del deque de aristas la arista que cumple con solicitado
+//Función que extrae del deque de aristas la arista que cumple con solicitado
 struct Arista extraer_arista (deque<Arista> aristas, int nodo1, int nodo2)
 {
     for (int i = 0; i < aristas.size(); ++i)
