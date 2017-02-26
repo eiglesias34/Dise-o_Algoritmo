@@ -8,7 +8,7 @@
 *   Hecho por: Enrique Iglesias 11-10477
 *              Gabriel Iglesias 11-10476
 *
-*   Última modificación: 23/02/17
+*   Última modificación: 26/02/17
 */
 
 #include <cstdlib>
@@ -22,6 +22,7 @@
 #include <time.h>
 #include <string.h>
 #include <unistd.h>
+#include <stdlib.h>
 
 #include "grafo.cpp"
 
@@ -84,7 +85,7 @@ class Mycomparison {
 		}
 };
 
-void hallarCamino(struct Graph* graph, deque<Arista> aristas) {
+void hallarCamino(struct Graph* graph, deque<Arista> aristas, string& camino, int& ganancia) {
 
 	struct AdjListNode *start;
 	struct AdjListNode aux, src, dest;
@@ -111,6 +112,10 @@ void hallarCamino(struct Graph* graph, deque<Arista> aristas) {
 	struct Arista arco;
 
 	int i = 0;
+	ganancia = 0;
+
+	cout << "1";
+	camino.append("1");
 
 	while (!pq.empty()) {
 		
@@ -132,7 +137,10 @@ void hallarCamino(struct Graph* graph, deque<Arista> aristas) {
 		if (src.parent != 0) {
 			// cout << "camino" << endl;
 			// cout << "d - ";
-			cout << src.parent << " - " << src.id << " - ";
+			ganancia = ganancia + src.value;
+			cout << " - " <</*src.parent << " - " <<*/ src.id;
+			camino.append(" - ");
+			camino.append(to_string(src.id));
 		}
 
 		//Calcula el beneficio que se obtiene al ir a cada nodo adyacente 
@@ -175,7 +183,8 @@ void hallarCamino(struct Graph* graph, deque<Arista> aristas) {
 		}
 	}
 
-	cout << endl;
+	cout << "\n" << endl;
+	cout << "Ganancia: " << ganancia << endl;
 } 
 
 int main(int argc, char const *argv[]) {
@@ -209,7 +218,7 @@ int main(int argc, char const *argv[]) {
 	// Lectura del Archivo
 	string a, b, c, d, e;
 	
-	cout << "Reading from the file" << endl;
+	cout << "Reading from the file... " << endl;
 	
 	arch_entrada >> a >> b >> c >> d >> nvertices;
 	cout << "\n" << nvertices << " " << "vertices" << endl; 
@@ -243,23 +252,29 @@ int main(int argc, char const *argv[]) {
 		}
 	}
 
-	printGraph(grafo);
+	//printGraph(grafo);
 
-	hallarCamino(grafo, aristas);
+	cout << "Camino:" << endl;
+
+	int ganancia = 0;
+	string camino = "";
+	hallarCamino(grafo, aristas, camino, ganancia);
 	
 	//cout << (extraer_arista(aristas,1,2)).costo << endl;
 	
 	// Se escriben los resultados en el archivo de salida.
-	arch_salida << "Ganancia" << " " << "xx" << endl;
-	arch_salida << "Camino" << " " << "..." << endl;
-	
-	// Cierre de archivos.
-	arch_entrada.close();
-	arch_salida.close();
+	arch_salida << "Ganancia" << " " << ganancia << endl;
+	arch_salida << "Camino:" << " " << camino << endl;
 
 	time(&fin);         // obtiene el tiempo al finalizar el programa.
 	
 	seconds = difftime(fin,inicio);
+
+	arch_salida << "Tiempo:" << " " << seconds << endl;
+
+	// Cierre de archivos.
+	arch_entrada.close();
+	arch_salida.close();
 
 	cout << "\n" << seconds << " segundos" << endl;
 
