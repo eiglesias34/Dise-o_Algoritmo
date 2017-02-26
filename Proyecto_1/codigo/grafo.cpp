@@ -8,7 +8,7 @@
 *   Hecho por: Enrique Iglesias 11-10477
 *              Gabriel Iglesias 11-10476
 *
-*   Última modificación: 23/02/17
+*   Última modificación: 25/02/17
 */
 
 #include <cstdlib>
