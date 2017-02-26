@@ -27,6 +27,17 @@
 
 using namespace std;
 
+// Función template para imprimir una cola.
+template <typename T> void print_queue(T q) {
+    
+    while (!q.empty()) {
+        cout << q.top().id << " " << q.top().value << " ";
+        q.pop();
+    }
+
+    cout << '\n';
+}
+
 // Función template para buscar un elemento.
 template <typename T> bool find_and_remove(T& q, int nodo) {
 
@@ -39,25 +50,19 @@ template <typename T> bool find_and_remove(T& q, int nodo) {
 			++i;
 		} else {
 			aux1.push(aux2.top());
+			//cout << "F&R  ";
+			//print_queue(aux1);
+			//cout << "\n";
 		}
 		aux2.pop();
 	}
+
 	if (i) {
 		q.swap(aux1);
 		return true;
 	} else {
 		return false;
 	}
-}
-
-// Función template para imprimir una cola.
-template <typename T> void print_queue(T q) {
-    
-    while (!q.empty()) {
-        cout << q.top().id << " " << q.top().value << " ";
-        q.pop();
-    }
-    std::cout << '\n';
 }
 
 // Clase para comparar dos nodos en la cola de prioridades.
@@ -97,7 +102,6 @@ void hallarCamino(struct Graph* graph, deque<Arista> aristas) {
 		pq.push(aux);
 	}
 
-	//cout << endl;
 	//print_queue(pq);
 
 	// cout << find(pq, 4) << endl;
@@ -106,30 +110,68 @@ void hallarCamino(struct Graph* graph, deque<Arista> aristas) {
 	int beneficio, costo, total;
 	struct Arista arco;
 
+	int i = 0;
+
 	while (!pq.empty()) {
 		
+		++i;
+		// cout << "vuelta" << i << endl;
+		// print_queue(pq);
+		// cout << "\n";
+
 		src = pq.top();
 		pq.pop();
 
+		// cout << "se sacó a " << src.id << endl;
+		// print_queue(pq);
+
+		// cout << "nodo" << src.id << " " << "padre" << src.parent << endl;
+		// cout << endl;
+		
 		// Imprime el camino recorrido.
 		if (src.parent != 0) {
-			cout << src.id << " ";
+			// cout << "camino" << endl;
+			// cout << "d - ";
+			cout << src.parent << " - " << src.id << " - ";
 		}
 
 		//Calcula el beneficio que se obtiene al ir a cada nodo adyacente 
 		//del recien sacado de la cola
 		dest = *(graph->array[src.id].head);
-		while (dest.next != NULL) {
+
+		while (dest.id != -1) {
+
+			// cout << "adyacente" << dest.id << endl;
+
 			arco = extraer_arista(aristas, src.id, dest.id);
 			costo = arco.costo;
 			beneficio = arco.beneficio;
 			total = beneficio - costo;
-			if ((find_and_remove(pq, dest.id)) && (total > 0) && (total > dest.value)) {
+			// cout << "total " << total << endl;
+			// cout << "\n";
+
+			if ((total > 0) && (find_and_remove(pq, dest.id)) && (total > dest.value)) {
+				
+				// cout << "entre al if" <<endl;
+
 				dest.value  = total;
 				dest.parent = src.id;
+				pq.push(dest);
+
+				// cout << "despues del push" << endl;
+				// print_queue(pq);
+				// cout << "\n";
+
 			}
 
-			dest = *(dest.next);
+			// cout << "saliendo de " << dest.id << endl;
+			// print_queue(pq);
+			// cout << "\n";
+			if (dest.next == NULL) {
+				break;
+			} else {
+				dest = *(dest.next);
+			}
 		}
 	}
 
@@ -178,6 +220,8 @@ int main(int argc, char const *argv[]) {
 
 	arch_entrada >> a >> b >> c >> d >> nlados;
 	cout << "\n" << nlados << " " << "aristas" << endl;
+
+	cout << "\n";
 
 	// Inicialización del Grafo.
 	struct Graph * grafo = createGraph(nvertices); 
