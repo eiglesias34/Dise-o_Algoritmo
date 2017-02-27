@@ -3,7 +3,7 @@
 *   Trimestre Ene-Mar 2017
 *
 *   Proyecto I
-*   Programa Principal.
+*   Archivo con las instrucciones para ejecutar la aplicación.
 * 
 *   Hecho por: Enrique Iglesias 11-10477
 *              Gabriel Iglesias 11-10476
