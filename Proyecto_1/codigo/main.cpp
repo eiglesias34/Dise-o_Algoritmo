@@ -52,9 +52,6 @@ template <typename T> bool find_and_remove(T& q, int nodo) {
 			++i;
 		} else {
 			aux1.push(aux2.top());
-			//cout << "F&R  ";
-			//print_queue(aux1);
-			//cout << "\n";
 		}
 		aux2.pop();
 	}
@@ -101,14 +98,8 @@ void hallarCamino(struct Graph* graph, deque<Arista> aristas, string& camino, in
 	// Inicializamos la Cola de prioridades.
 	for (int i = 1; i < graph->V; ++i) {
 		aux = *(graph->array[i].nodeid);
-		//cout << aux.id << " ";
 		pq.push(aux);
 	}
-
-	//print_queue(pq);
-
-	// cout << find(pq, 4) << endl;
-	// cout << find(pq, 8) << endl;
 
 	int beneficio, costo, total;
 	struct Arista arco;
@@ -122,24 +113,12 @@ void hallarCamino(struct Graph* graph, deque<Arista> aristas, string& camino, in
 	while (!pq.empty()) {
 		
 		++i;
-		//cout << "vuelta" << i << ". Cola:" << endl;
-		//print_queue(pq);
-		//cout << "\n";
-
 		src = pq.top();
 		pq.pop();
-
-		//cout << "se sacó a " << src.id << endl;
-		//print_queue(pq);
-
-		//cout << "nodo" << src.id << " " << "padre" << src.parent << endl;
-		//cout << endl;
 		
 		// Imprime el camino recorrido.
 		if (src.parent != 0) {
 			last = src.id;
-			// cout << "camino" << endl;
-			// cout << "d - ";
 			ganancia = ganancia + src.value;
 			cout << " - " <</*src.parent << " - " <<*/ src.id;
 			camino.append(" - ");
@@ -154,9 +133,6 @@ void hallarCamino(struct Graph* graph, deque<Arista> aristas, string& camino, in
 		// Itera sobre los adyacentes del nodo sacado de la cola
 		while (true) {
 
-			//cout << "\n";
-			//cout << "adyacente " << graph->array[dest2.id].nodeid->id << endl;
-
 			arco = extraer_arista(aristas, src.id, graph->array[dest2.id].nodeid->id);
 			costo = arco.costo;
 			beneficio = arco.beneficio;
@@ -164,42 +140,22 @@ void hallarCamino(struct Graph* graph, deque<Arista> aristas, string& camino, in
 
 			aristas.push_front(crear_arista(arco.nodo2, arco.nodo1, costo, beneficio));
 
-			//cout << "total " << total << endl;
-			//cout << "\n";
-
-			//cout << "Value nodo ";
-			//cout << graph->array[dest2.id].nodeid->value << endl;
-
-
-			if ((total > 0) && (total > graph->array[dest2.id].nodeid->value) && (find_and_remove(pq, graph->array[dest2.id].nodeid->id))) {
-				
-				//cout << "entre al if" <<endl;
+			if ((total > graph->array[dest2.id].nodeid->value) && (find_and_remove(pq, graph->array[dest2.id].nodeid->id))) {
 
 				graph->array[dest2.id].nodeid->value  = total;
 				graph->array[dest2.id].nodeid->parent = src.id;
 				pq.push(*graph->array[dest2.id].nodeid);
 
 				modificar_arista(aristas, src.id, graph->array[dest2.id].nodeid->id);
-				
-				//cout << "Después del push." << endl;
-				//print_queue(pq);
-				//cout << "\n";
 			}
-
-			//cout << "Saliendo de " << graph->array[dest2.id].nodeid->id << "..." << endl;
-			//print_queue(pq);
-			//cout << "\n";
 			
 			if (dest2.next == NULL) {
 				break;
 			} else {
 				dest2 = *(dest2.next);
-				//dest  = *(graph->array[dest2.id].nodeid);
 			}
 		}
 	}
-
-	//cout << "\n";
 	// Reinicializa todos los nodos del grafo
 	for (int i = 1; i < graph->V; ++i) {
 		//cout << "Nodo " << graph->array[i].nodeid->id << endl;
@@ -217,40 +173,18 @@ void hallarCamino(struct Graph* graph, deque<Arista> aristas, string& camino, in
 	// Relajación progresiva de todos los arcos.
 	for (int i = 2; i < graph->V ; ++i) {
 
-		//cout << graph->V << endl;
-
     	while (it != aristas.end()) {
 
     		arco = *it++;
     		total = arco.beneficio - arco.costo;
-    		// cout << endl;
-    		// cout << "nodo 2: " << arco.nodo2 << endl;
-    		// cout << "nodo 1: " << arco.nodo1 << endl;
-    		// cout << "beneficio " << arco.beneficio << " costo " << arco.costo << endl;
-
-    		// cout << endl;
-    		// cout << "nodo 2: " << endl;
-    		// cout << graph->array[arco.nodo2].nodeid->value << endl;
-    		// cout << "nodo 1: " << endl;
-    		// cout << graph->array[arco.nodo1].nodeid->value << endl;
 
 			if (graph->array[arco.nodo2].nodeid->value < (graph->array[arco.nodo1].nodeid->value + total)) {
 
     			graph->array[arco.nodo2].nodeid->value  = graph->array[arco.nodo1].nodeid->value + total;
     			graph->array[arco.nodo2].nodeid->parent = arco.nodo1;
-
-    			// cout << "bla" << endl;
-    			// cout << "nodo 2: " << arco.nodo2 << endl;
-    			// cout << "nodo 1: " << arco.nodo1 << endl;
-    			// cout << graph->array[arco.nodo2].nodeid->value << endl;
-    			// cout << graph->array[arco.nodo2].nodeid->parent << endl;
     		}
     	}
     }
-
-    //cout << last << endl;
-    //cout << "\n";
-    //cout << ult.id << endl;
 
     // Se halla el camino de vuelta.
     deque<int> vuelta;     // variable que guarda el camino de vuelta 
@@ -259,14 +193,9 @@ void hallarCamino(struct Graph* graph, deque<Arista> aristas, string& camino, in
     aux = *(graph->array[1].nodeid);
     ganancia = ganancia + aux.value;
 
-    //cout << "aqui" << endl;
-
     // Agrega a la estructura vuelta los nodos pertenecientes al camino de vuelta.
     while (aux.id != ult.id) {
     	vuelta.push_front(aux.id);
-    	// cout << "nodo " << aux.id << endl;
-    	// cout << "padre " << aux.id << endl;
-    	// cout << graph->array[aux.id].nodeid->parent << endl;
     	aux = *(graph->array[graph->array[aux.id].nodeid->parent].nodeid);
     }
 
@@ -317,10 +246,6 @@ int main(int argc, char const *argv[]) {
 	arch_entrada >> a >> b >> c >> d >> nvertices;
 	cout << "\n" << nvertices << " " << "vertices" << endl; 
 
-	// for (int i = 0; i < 5; ++i) {
-	// 	arch_entrada >> data;
-	// }
-
 	arch_entrada >> a >> b >> c >> d >> nlados;
 	cout << "\n" << nlados << " " << "aristas" << endl;
 
@@ -345,11 +270,6 @@ int main(int argc, char const *argv[]) {
 			arch_entrada >> a >> b >> c >> d >> e;
 		}
 	}
-
-	//printGraph(grafo);
-
-	cout << "\n";
-	//cout << "Camino:" << endl;
 
 	int ganancia = 0;
 	string camino = "";
