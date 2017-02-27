@@ -19,6 +19,7 @@
 
 #include <time.h>
 #include <stdio.h>
+#include <limits.h>
 #include <stdlib.h>
 #include <unistd.h>
 
@@ -62,7 +63,7 @@ struct AdjListNode* newAdjListNode(int id)
     struct AdjListNode* newNode =
             (struct AdjListNode*) malloc(sizeof(struct AdjListNode));
     newNode->id     = id;
-    newNode->value  = -1;
+    newNode->value  = INT_MIN;
     newNode->parent = 0;
     newNode->next = NULL;
     return newNode;
@@ -129,14 +130,24 @@ void printGraph(struct Graph* graph)
 }
 
 //Función que extrae del deque de aristas la arista que cumple con solicitado
-struct Arista extraer_arista (deque<Arista> aristas, int nodo1, int nodo2)
+struct Arista extraer_arista (deque<Arista>& aristas, int nodo1, int nodo2)
 {
     for (int i = 0; i < aristas.size(); ++i)
     {
-        if (((aristas[i].nodo1 == nodo1) && (aristas[i].nodo2 == nodo2)) || ((aristas[i].nodo1 == nodo2) && (aristas[i].nodo2 == nodo1)))
-        {
+        if (((aristas[i].nodo1 == nodo1) && (aristas[i].nodo2 == nodo2)) || ((aristas[i].nodo1 == nodo2) && (aristas[i].nodo2 == nodo1))) {
             return aristas[i];
         }
     }
     return Arista();
+};
+
+void modificar_arista (deque<Arista>& aristas, int nodo1, int nodo2)
+{
+    for (int i = 0; i < aristas.size(); ++i) {
+        
+        if (((aristas[i].nodo1 == nodo1) && (aristas[i].nodo2 == nodo2)) || ((aristas[i].nodo1 == nodo2) && (aristas[i].nodo2 == nodo1)))
+        {
+            aristas[i].beneficio = 0;
+        }
+    }
 };
