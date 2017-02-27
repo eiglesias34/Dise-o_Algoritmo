@@ -20,6 +20,7 @@
 #include <queue>
 
 #include <time.h>
+#include <limits.h>
 #include <string.h>
 #include <unistd.h>
 #include <stdlib.h>
@@ -202,7 +203,7 @@ void hallarCamino(struct Graph* graph, deque<Arista> aristas, string& camino, in
 	// Reinicializa todos los nodos del grafo
 	for (int i = 1; i < graph->V; ++i) {
 		//cout << "Nodo " << graph->array[i].nodeid->id << endl;
-		graph->array[i].nodeid->value  = -100;
+		graph->array[i].nodeid->value  = -999999;
 		graph->array[i].nodeid->parent = 0;
 	}
 
@@ -211,38 +212,38 @@ void hallarCamino(struct Graph* graph, deque<Arista> aristas, string& camino, in
 	deque<Arista>::iterator it = aristas.begin();
 
 	graph->array[last].nodeid->value = 0;
-	ult = *(graph->array[src.id].nodeid);
+	ult = *(graph->array[last].nodeid);
 
 	// Relajación progresiva de todos los arcos.
 	for (int i = 2; i < graph->V ; ++i) {
 
-		cout << graph->V << endl;
+		//cout << graph->V << endl;
 
     	while (it != aristas.end()) {
 
     		arco = *it++;
     		total = arco.beneficio - arco.costo;
-    		cout << endl;
-    		cout << "nodo 2: " << arco.nodo2 << endl;
-    			cout << "nodo 1: " << arco.nodo1 << endl;
-    		cout << "beneficio " << arco.beneficio << " costo " << arco.costo << endl;
+    		// cout << endl;
+    		// cout << "nodo 2: " << arco.nodo2 << endl;
+    		// cout << "nodo 1: " << arco.nodo1 << endl;
+    		// cout << "beneficio " << arco.beneficio << " costo " << arco.costo << endl;
 
-    		cout << endl;
-    		cout << "nodo 2: " << endl;
-    		cout << graph->array[arco.nodo2].nodeid->value << endl;
-    		cout << "nodo 1: " << endl;
-    		cout << graph->array[arco.nodo1].nodeid->value << endl;
+    		// cout << endl;
+    		// cout << "nodo 2: " << endl;
+    		// cout << graph->array[arco.nodo2].nodeid->value << endl;
+    		// cout << "nodo 1: " << endl;
+    		// cout << graph->array[arco.nodo1].nodeid->value << endl;
 
-		if (graph->array[arco.nodo2].nodeid->value < (graph->array[arco.nodo1].nodeid->value + total)) {
+			if (graph->array[arco.nodo2].nodeid->value < (graph->array[arco.nodo1].nodeid->value + total)) {
 
     			graph->array[arco.nodo2].nodeid->value  = graph->array[arco.nodo1].nodeid->value + total;
     			graph->array[arco.nodo2].nodeid->parent = arco.nodo1;
 
-    			cout << "bla" << endl;
-    			cout << "nodo 2: " << arco.nodo2 << endl;
-    			cout << "nodo 1: " << arco.nodo1 << endl;
-    			cout << graph->array[arco.nodo2].nodeid->value << endl;
-    			cout << graph->array[arco.nodo2].nodeid->parent << endl;
+    			// cout << "bla" << endl;
+    			// cout << "nodo 2: " << arco.nodo2 << endl;
+    			// cout << "nodo 1: " << arco.nodo1 << endl;
+    			// cout << graph->array[arco.nodo2].nodeid->value << endl;
+    			// cout << graph->array[arco.nodo2].nodeid->parent << endl;
     		}
     	}
     }
