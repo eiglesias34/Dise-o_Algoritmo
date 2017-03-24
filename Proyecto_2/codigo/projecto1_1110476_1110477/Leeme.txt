@@ -1,0 +1,41 @@
+/** Universidad Simón Bolívar
+*   CI5437 - Diseño de Algoritmos I
+*   Trimestre Ene-Mar 2017
+*
+*   Proyecto I
+*   Archivo con las instrucciones para ejecutar la aplicación.
+* 
+*   Hecho por: Enrique Iglesias 11-10477
+*              Gabriel Iglesias 11-10476
+*
+*   Última modificación: 26/02/17
+*/
+
+El código del proyecto esta comprendido por dos archivos de código en c++:
+
+	- main.cpp: Programa principal en donde se realiza la lectura del archivo de
+				entrada, la creación de estructuras necesarias y se ejecuta la 
+                llamada al algoritmo encargado de hallar el camino aproximado.
+
+	- grafo.cpp: Script con las estructuras y funciones necesarias para 
+                 representar y operar con nodos, aristas, y grafos
+
+Ejecución
+ 
+Para ejecutar la aplicación debe unicamente compilar el archivo main.cpp usando
+el estandar c++11. Para ello ejecute desde el terminal en un sistema Unix:
+
+	$g++ main.cpp -o main -std=c++11
+
+con esto debería tener su programa compilado y tener en el directorio de 
+compilación un arhcivo ejecutable llamado main.
+
+Luego, para correr la aplicación ejecute el siguiente comando:
+
+	$./main nombre_archivo_entrada
+
+en caso de no indicar un archivo de entrada saldrá un mensaje de error por pantalla.
+
+El Programa generara un archivo de texto con nombre nombre_archivo_entrada_salida.txt
+en donde encontrara la ganancia total aproximada, el camino recorrido asociado y el
+tiempo en segundo que tomó al programa encontrar dicho camino. 																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																																														
