@@ -12,12 +12,14 @@
 */
 
 #include <cstdlib>
-#include <fstream>
-#include <iostream>
 #include <string>
 #include <vector>
 #include <deque>
 #include <queue>
+
+#include <fstream>           // istream, ostream
+#include <iostream>          // cout, cin, endl
+#include <algorithm>         // max
 
 #include <time.h>
 #include <limits.h>
@@ -37,13 +39,31 @@ struct Solucion
 
 /* Variables Globales */
 
-int beneficioActual;
+int beneficioDisponible;
+
 struct Solucion solParcial;
 struct Solucion mejorSolucion;
 
 /* Prototypes */
 
+int obtenerMaximoBeneficio(deque<Arista> lados);
+
+deque<Arista> obtenerSucesores(deque<Arista> lados);
+
+bool cicloNegativo(struct Arista lado, struct Solucion solucion);
+
+bool ladoEnSolParcial(struct Arista lado, struct Solucion solucion);
+
+bool repiteCiclo(struct Arista lado, struct Solucion solucion);
+
+bool cumpleAcotamiento(struct Arista lado, struct Solucion solucion);
+
+struct Arista eliminarUltimoLado(struct Solucion solucion);
+
+void agregarLado(struct Arista lado, struct Solucion solucion);
+
 void busquedaEnProfundidad(); 
+
 void hallarCamino(struct Graph* graph, deque<Arista> aristas, string solInicial);
 
 /* Programa Principal */
@@ -115,6 +135,8 @@ int main(int argc, char const *argv[]) {
 
 	deque<Arista> aristas;             // Estructura que almacena las aristas.
 	string number;                     // Variable para chequear que tipo de linea se lee.
+
+	int nodo1, nodo2, costo, beneficio;
 	
 	while (arch_entrada >> number) {
 		
@@ -156,11 +178,11 @@ int main(int argc, char const *argv[]) {
 	return 0;
 }
 
-void hallarCamino(struct Graph* graph, deque<Arista> aristas, string solInicial) {
+void hallarCamino(struct Graph* graph, deque<Arista> aristas, struct Solucion solInicial) {
 	
-	solParcial.append("1");
+	solParcial.camino.append("1");
 	mejorSolucion = solInicial;
-	beneficioActual = ;
+	beneficioDisponible = obtenerMaximoBeneficio(aristas);
 	busquedaEnProfundidad();
 }
 
@@ -168,4 +190,29 @@ void busquedaEnProfundidad() {
 
 	char v = solParcial.camino.back();
 
+	if (v == '1') {
+
+		if (solParcial.beneficio > mejorSolucion.beneficio) {
+			mejorSolucion = solParcial;
+		}
+	}
+
+	struct Arista arco;
+	deque<Arista> ladosAdyacentes = obtenerSucesores(aristas);
+	deque<Arista>::iterator it = ladosAdyacentes.begin();
+
+	while (it != ladosAdyacentes.end()) {
+
+		arco = *it;
+		if (!cicloNegativo(arco, solParcial) && !ladoEnSolParcial(arco, solParcial)
+		     &&  !repiteCiclo(arco, solParcial) && cumpleAcotamiento(arco, solParcial)) {
+
+			agregarLado(arco, solParcial);
+			beneficioDisponible = beneficioDisponible - max(0, (arco.beneficio - arco.costo));
+			busquedaEnProfundidad();
+		}
+	}
+
+	arco = eliminarUltimoLado(solParcial);
+	beneficioDisponible = beneficioDisponible + max(0, (arco.beneficio - arco.costo));
 }
