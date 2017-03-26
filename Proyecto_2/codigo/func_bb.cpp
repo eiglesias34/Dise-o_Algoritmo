@@ -29,13 +29,21 @@
 
 using namespace std;
 
-bool cumple_actamiento(Arista a, deque<Arista> ){
-	int beneficioE = a.beneficio - a.costo;
-	int beneficioSolParcial = obtener_beneficio(solParcial) + beneficioE;
-	int maxBeneficio = beneficioDisponible -  std::max_element(0,beneficioE) + beneficioSolParcial;
-	if (maxBeneficio <= obtener_beneficio(mejorSol))
-	{
+struct Solucion
+{
+	int beneficio;
+	string camino;
+};
+
+bool cumpleAcotamiento(struct Arista lado, struct Solucion solucion) {
+	
+	int beneficioE = lado.beneficio - lado.costo;
+	int beneficioSolParcial = solParcial.beneficio + beneficioE;
+	int maxBeneficio = beneficioDisponible -  max(0, beneficioE) + beneficioSolParcial;
+	
+	if (maxBeneficio <= mejorSol.beneficio)	{
 		return false;
 	}
+
 	return true;
 }
