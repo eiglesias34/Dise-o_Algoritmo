@@ -50,21 +50,21 @@ int obtenerMaximoBeneficio(deque<Arista> lados);
 
 deque<Arista> obtenerSucesores(deque<Arista> lados);
 
-bool cicloNegativo(struct Arista lado, struct Solucion solucion);
+bool cicloNegativo(struct Arista arista, struct Solucion solucion);
 
-bool ladoEnSolParcial(struct Arista lado, struct Solucion solucion);
+bool ladoEnSolParcial(struct Arista arista, struct Solucion solucion);
 
-bool repiteCiclo(struct Arista lado, struct Solucion solucion);
+bool repiteCiclo(struct Arista arista, struct Solucion solucion);
 
-bool cumpleAcotamiento(struct Arista lado, struct Solucion solucion);
+bool cumpleAcotamiento(struct Arista arista, struct Solucion solucion);
 
 struct Arista eliminarUltimoLado(struct Solucion solucion);
 
-void agregarLado(struct Arista lado, struct Solucion solucion);
+void agregarLado(struct Arista arista, struct Solucion solucion);
 
 void busquedaEnProfundidad(); 
 
-void hallarCamino(struct Graph* graph, deque<Arista> aristas, string solInicial);
+void hallarCamino(struct Graph* graph, deque<Arista> aristas, struct Solucion solInicial);
 
 /* Programa Principal */
 
@@ -215,4 +215,17 @@ void busquedaEnProfundidad() {
 
 	arco = eliminarUltimoLado(solParcial);
 	beneficioDisponible = beneficioDisponible + max(0, (arco.beneficio - arco.costo));
+}
+
+bool cumpleAcotamiento(struct Arista lado, struct Solucion solucion) {
+	
+	int beneficioE = lado.beneficio - lado.costo;
+	int beneficioSolParcial = solParcial.beneficio + beneficioE;
+	int maxBeneficio = beneficioDisponible -  max(0, beneficioE) + beneficioSolParcial;
+	
+	if (maxBeneficio <= mejorSolucion.beneficio)	{
+		return false;
+	}
+
+	return true;
 }
