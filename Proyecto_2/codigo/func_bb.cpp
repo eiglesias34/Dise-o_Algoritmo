@@ -27,6 +27,8 @@
 #include <unistd.h>
 #include <stdlib.h>
 
+#include "grafo.cpp"
+
 using namespace std;
 
 struct Solucion
@@ -34,6 +36,49 @@ struct Solucion
 	int beneficio;
 	string camino;
 };
+
+deque<Arista> obtener_lista_de_sucesores (Vertice v, deque<Arista>& aristas){
+
+	deque<Arista> sucesores;
+	struct AdjListNode* next = v.next;
+	while (next != NULL){
+		Arista lado = extraer_arista(aristas, v.id, next.id);
+		sucesores.push_front(lado);
+		sucesores.push_front(crear_arista(v.id, next.id, lado.costo, 0));
+		next = v.next;
+	}
+	return sucesores
+}
+
+int arista_pertenece (struct Arista lado, struct Solucion solucion){
+
+	int count = 0;
+
+	for (int i = 0; i < strlen(solucion); ++i)
+	{
+		if (((lado.nodo1 == atoi(solucion[i].c_str()))) and ((lado.nodo2 == atoi(solucion[i+1].c_str()))))
+		{
+			count++;
+		}
+	}
+	return count;
+}
+
+bool esta_lado_en_solparcial(struct Arista lado, struct Solucion solucion){
+
+	if (arista_pertenece(lado, solucion) == 0)
+	{
+		return false;
+	}
+	elif (arista_pertenece(lado, solucion) == 1){
+		if (lado.beneficio == 0)
+		{
+			return false;
+		}else{
+			return true;
+		}
+	}
+}
 
 bool cumpleAcotamiento(struct Arista lado, struct Solucion solucion) {
 	
