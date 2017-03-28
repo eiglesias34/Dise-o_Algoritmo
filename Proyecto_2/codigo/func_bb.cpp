@@ -36,35 +36,39 @@ struct Solucion
 };
 
 bool hay_ciclo (struct Arista lado, struct Solucion solucion){
-	for (int i = 0; i < solucion.camino.length(); ++i)
-	{
-		if (lado.nodo2 == atoi(solucion.camino.substr(i,1).c_str()))
-		{
+	
+	for (int i = 0; i < solucion.camino.length(); ++i) {
+
+		if (lado.nodo2 == atoi(solucion.camino.substr(i,1).c_str())) {
 			return true;
 		}
 	}
+
 	return false;
 }
 
 bool beneficio_negativo (struct Arista lado, struct Solucion solucion, deque<Arista>& aristas){
+	
 	int count = lado.costo - lado.beneficio;
-	for (int i = solucion.camino.length()-1; 0 < i; --i)
-	{
+	for (int i = solucion.camino.length()-1; 0 < i; --i) {
+
 		Arista a = extraer_arista(aristas, atoi(solucion.camino.substr(i-1,1).c_str()), atoi(solucion.camino.substr(i,1).c_str()));
 		count = count + (a.costo - a.beneficio);
-		if (atoi(solucion.camino.substr(i-1,1).c_str()) == lado.nodo2)
-		{
+		
+		if (atoi(solucion.camino.substr(i-1,1).c_str()) == lado.nodo2) {
 			break;
 		}
 	}
+
 	return count < 0;
 }
 
 bool ciclo_negativo (struct Arista lado, struct Solucion solucion, deque<Arista>& aristas){
-	if ((hay_ciclo(lado, solucion)) and beneficio_negativo(lado, solucion, aristas))
-	{
+	
+	if ((hay_ciclo(lado, solucion)) and (beneficio_negativo(lado, solucion, aristas))) {
 		return true;
 	}
+
 	return false;
 }
 
@@ -72,12 +76,14 @@ deque<Arista> obtener_lista_de_sucesores (AdjListNode v, deque<Arista>& aristas)
 
 	deque<Arista> sucesores;
 	struct AdjListNode* next = v.next;
-	while (next != NULL){
+	
+	while (next != NULL) {
 		Arista lado = extraer_arista(aristas, v.id, next->id);
 		sucesores.push_front(lado);
 		sucesores.push_front(crear_arista(v.id, next->id, lado.costo, 0));
 		next = v.next;
 	}
+
 	return sucesores;
 }
 
@@ -92,23 +98,28 @@ int arista_pertenece (struct Arista lado, struct Solucion solucion){
 			count++;
 		}
 	}
+
 	return count;
 }
 
 bool esta_lado_en_solparcial(struct Arista lado, struct Solucion solucion){
 
-	if (arista_pertenece(lado, solucion) == 0)
-	{
+	if (arista_pertenece(lado, solucion) == 0) {
 		return false;
 	}
+
 	else if (arista_pertenece(lado, solucion) == 1){
-		if (lado.beneficio == 0)
-		{
+		
+		if (lado.beneficio == 0) {
 			return false;
-		}else{
+		}
+
+		else {
 			return true;
 		}
-	}else{
+	}
+
+	else {		
 		return true;
 	}
 }
@@ -124,4 +135,33 @@ bool cumpleAcotamiento(struct Arista lado, struct Solucion solucion) {
 	}
 
 	return true;
+}
+
+void agregar_lado(struct Arista arista, struct Solucion& solucion) {
+
+	string str = " - ";
+	str.append(to_string(arista.nodo2));
+	solucion.camino.append(str);
+}
+
+struct Arista eliminar_ultimo_lado(struct Solucion& solucion) {
+
+	int nodo1, nodo2;
+	struct Arista arista;
+
+	//c = solParcial.camino.back();
+
+	nodo2 = solParcial.at(solParcial.end());
+	nodo1 = solParcial.at(solParcial.end()-4);
+
+	solParcial.erase(solParcial.end()-5, 5);
+
+	arista = extraer_arista(aristas, nodo1, nodo2)
+
+	return arista;
+}
+
+void repite_ciclo(deque<Arista> adyacentes, struct Arista arista, struct Solucion solucion) {
+
+
 }

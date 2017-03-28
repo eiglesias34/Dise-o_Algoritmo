@@ -205,7 +205,7 @@ void busquedaEnProfundidad() {
 
 		arco = *it;
 		if (!cicloNegativo(arco, solParcial) && !ladoEnSolParcial(arco, solParcial)
-		     &&  !repiteCiclo(arco, solParcial) && cumpleAcotamiento(arco, solParcial)) {
+		     &&  !repiteCiclo(ladosAdyacentes, arco, solParcial) && cumpleAcotamiento(arco, solParcial)) {
 
 			agregarLado(arco, solParcial);
 			beneficioDisponible = beneficioDisponible - max(0, (arco.beneficio - arco.costo));
