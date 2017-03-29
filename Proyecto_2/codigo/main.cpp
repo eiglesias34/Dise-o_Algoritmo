@@ -25,46 +25,33 @@
 #include <limits.h>
 #include <string.h>
 #include <unistd.h>
-#include <stdlib.h>
+#include <stdlib.h>	
 
-#include "grafo.cpp" 
+#include "func_bb.cpp" 
 
 using namespace std;
 
-struct Solucion
-{
-	int beneficio;
-	string camino;
-};
-
-/* Variables Globales */
-
-int beneficioDisponible;
-
-struct Solucion solParcial;
-struct Solucion mejorSolucion;
-
 /* Prototypes */
 
-int obtenerMaximoBeneficio(deque<Arista> lados);
+// int obtenerMaximoBeneficio(deque<Arista> lados);
 
-deque<Arista> obtenerSucesores(deque<Arista> lados);
+// deque<Arista> obtenerSucesores(deque<Arista> lados);
 
-bool cicloNegativo(struct Arista arista, struct Solucion solucion);
+// bool cicloNegativo(struct Arista arista, struct Solucion solucion);
 
-bool ladoEnSolParcial(struct Arista arista, struct Solucion solucion);
+// bool ladoEnSolParcial(struct Arista arista, struct Solucion solucion);
 
-bool repiteCiclo(struct Arista arista, struct Solucion solucion);
+// bool repiteCiclo(struct Arista arista, struct Solucion solucion);
 
-bool cumpleAcotamiento(struct Arista arista, struct Solucion solucion);
+// bool cumpleAcotamiento(struct Arista arista, struct Solucion solucion);
 
-struct Arista eliminarUltimoLado(struct Solucion solucion);
+// struct Arista eliminarUltimoLado(struct Solucion solucion);
 
-void agregarLado(struct Arista arista, struct Solucion solucion);
+// void agregarLado(struct Arista arista, struct Solucion solucion);
 
 void busquedaEnProfundidad(); 
 
-void hallarCamino(struct Graph* graph, deque<Arista> aristas, struct Solucion solInicial);
+void hallarCamino(struct Graph* graph, struct Solucion solInicial);
 
 /* Programa Principal */
 
@@ -85,8 +72,8 @@ int main(int argc, char const *argv[]) {
     
     int nvertices, nlados;
 
-    int ganancia = 0;
-	string camino = "";
+    //int ganancia = 0;
+	//string camino = "";
 
     /*-----------------------------------------------------*/
 
@@ -131,10 +118,12 @@ int main(int argc, char const *argv[]) {
 
 	/* Inicialización del Grafo. */
 	
-	struct Graph* grafo = createGraph(nvertices);
+	//struct Graph* grafo = createGraph(nvertices);
 
-	deque<Arista> aristas;             // Estructura que almacena las aristas.
-	string number;                     // Variable para chequear que tipo de linea se lee.
+	graph = createGraph(nvertices);
+
+	//deque<Arista> aristas;             // Estructura que almacena las aristas.
+	string number;                       // Variable para chequear que tipo de linea se lee.
 
 	int nodo1, nodo2, costo, beneficio;
 	
@@ -146,7 +135,7 @@ int main(int argc, char const *argv[]) {
 			nodo1 = atoi(number.c_str());
 			arch_entrada >> nodo2 >> costo >> beneficio;
 			
-			addEdge(grafo, nodo1, nodo2);
+			addEdge(graph, nodo1, nodo2);
 			aristas.push_front(crear_arista(nodo1, nodo2, costo, beneficio));
 		}
 
@@ -161,8 +150,8 @@ int main(int argc, char const *argv[]) {
 
     /* Se escriben los resultados en el archivo de salida. */
 
-	arch_salida << "Ganancia" << " " << ganancia << endl;
-	arch_salida << "Camino:" << " " << camino << endl;
+	//arch_salida << "Ganancia" << " " << ganancia << endl;
+	//arch_salida << "Camino:" << " " << camino << endl;
 
 	time(&fin);         // obtiene el tiempo al finalizar el programa.
 	seconds = difftime(fin, inicio);
@@ -178,11 +167,11 @@ int main(int argc, char const *argv[]) {
 	return 0;
 }
 
-void hallarCamino(struct Graph* graph, deque<Arista> aristas, struct Solucion solInicial) {
+void hallarCamino(struct Graph* graph, struct Solucion solInicial) {
 	
 	solParcial.camino.append("1");
-	mejorSolucion = solInicial;
-	beneficioDisponible = obtenerMaximoBeneficio(aristas);
+	mejorSol = solInicial;
+	beneficioDisponible = obtener_maximo_beneficio(aristas);
 	busquedaEnProfundidad();
 }
 
@@ -192,40 +181,27 @@ void busquedaEnProfundidad() {
 
 	if (v == '1') {
 
-		if (solParcial.beneficio > mejorSolucion.beneficio) {
-			mejorSolucion = solParcial;
+		if (solParcial.beneficio > mejorSol.beneficio) {
+			mejorSol = solParcial;
 		}
 	}
 
 	struct Arista arco;
-	deque<Arista> ladosAdyacentes = obtenerSucesores(aristas);
+	deque<Arista> ladosAdyacentes = obtener_lista_de_sucesores(v);
 	deque<Arista>::iterator it = ladosAdyacentes.begin();
 
 	while (it != ladosAdyacentes.end()) {
 
 		arco = *it;
-		if (!cicloNegativo(arco, solParcial) && !ladoEnSolParcial(arco, solParcial)
-		     &&  !repiteCiclo(ladosAdyacentes, arco, solParcial) && cumpleAcotamiento(arco, solParcial)) {
+		if (!ciclo_negativo(arco, solParcial) && !esta_lado_en_solparcial(arco, solParcial)
+		     &&  !repite_ciclo(ladosAdyacentes, arco, solParcial) && cumple_acotamiento(arco, solParcial)) {
 
-			agregarLado(arco, solParcial);
+			agregar_lado(arco, solParcial);
 			beneficioDisponible = beneficioDisponible - max(0, (arco.beneficio - arco.costo));
 			busquedaEnProfundidad();
 		}
 	}
 
-	arco = eliminarUltimoLado(solParcial);
+	arco = eliminar_ultimo_lado(solParcial);
 	beneficioDisponible = beneficioDisponible + max(0, (arco.beneficio - arco.costo));
-}
-
-bool cumpleAcotamiento(struct Arista lado, struct Solucion solucion) {
-	
-	int beneficioE = lado.beneficio - lado.costo;
-	int beneficioSolParcial = solParcial.beneficio + beneficioE;
-	int maxBeneficio = beneficioDisponible -  max(0, beneficioE) + beneficioSolParcial;
-	
-	if (maxBeneficio <= mejorSolucion.beneficio)	{
-		return false;
-	}
-
-	return true;
 }
