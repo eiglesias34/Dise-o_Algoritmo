@@ -259,9 +259,11 @@ int obtener_maximo_beneficio(deque<Arista> lados) {
 		struct Arista arco = *it;
 
 		if (arco.beneficio > arco.costo) {
-			beneficio = arco.beneficio - arco.costo;
+			beneficio = beneficio + arco.beneficio - arco.costo;
 		}
 
 		++it;
 	}
+
+	return beneficio;
 }

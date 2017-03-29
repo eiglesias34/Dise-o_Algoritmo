@@ -68,7 +68,7 @@ int main(int argc, char const *argv[]) {
 
     char line;
 	char data[10];
-	char message[] = "Debe especificar un archivo de entrada.";
+	char message[] = "Debe especificar un archivo de entrada, un camino solución y la ganancia del camino.";
     
     int nvertices, nlados;
 
@@ -114,6 +114,11 @@ int main(int argc, char const *argv[]) {
 
 	cout << "\n";
 
+	struct Solucion solInicial;
+
+	solInicial.camino = "1 - 2 - 5 - 4 - 3 - 2 - 1";
+	solInicial.beneficio = 14;
+
 	/*-----------------------------------------------------*/
 
 	/* Inicialización del Grafo. */
@@ -144,12 +149,14 @@ int main(int argc, char const *argv[]) {
 		}
 	}
 
-	printGraph(graph);
-	cout << aristas.size() << endl;
+	//printGraph(graph);
+	//cout << aristas.size() << endl;
 
 	/*-----------------------------------------------------*/
 
     //Algoritmo 1
+
+    hallarCamino(graph, solInicial);
 
     /* Se escriben los resultados en el archivo de salida. */
 
@@ -171,11 +178,15 @@ int main(int argc, char const *argv[]) {
 }
 
 void hallarCamino(struct Graph* graph, struct Solucion solInicial) {
-	
+
 	solParcial.camino.append("1");
 	mejorSol = solInicial;
 	beneficioDisponible = obtener_maximo_beneficio(aristas);
+	cout<< beneficioDisponible << endl;	
 	busquedaEnProfundidad();
+
+	cout << "Camino: " << solParcial.camino << endl;
+	cout << "Beneficio: " << solParcial.beneficio << endl;
 }
 
 void busquedaEnProfundidad() {
@@ -197,7 +208,7 @@ void busquedaEnProfundidad() {
 
 		arco = ladosAdyacentes.top();
 		ladosAdyacentes.pop();
-		
+
 		if (!ciclo_negativo(arco, solParcial) && !esta_lado_en_solparcial(arco, solParcial)
 		     &&  !repite_ciclo(ladosAdyacentes, arco, solParcial) && cumple_acotamiento(arco, solParcial)) {
 
