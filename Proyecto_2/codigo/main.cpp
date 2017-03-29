@@ -27,7 +27,7 @@
 #include <unistd.h>
 #include <stdlib.h>	
 
-#include "func_bb.cpp" 
+#include "algo_greedy.cpp" 
 
 using namespace std;
 
@@ -153,6 +153,10 @@ int main(int argc, char const *argv[]) {
 	//cout << aristas.size() << endl;
 
 	/*-----------------------------------------------------*/
+
+	int ganancia = 0;
+	string camino = "";
+	solInicial = hallarCamino_greedy(graph, aristas, camino, ganancia);
 
     //Algoritmo 1
 
