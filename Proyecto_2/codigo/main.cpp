@@ -144,6 +144,9 @@ int main(int argc, char const *argv[]) {
 		}
 	}
 
+	printGraph(graph);
+	cout << aristas.size() << endl;
+
 	/*-----------------------------------------------------*/
 
     //Algoritmo 1
@@ -187,12 +190,14 @@ void busquedaEnProfundidad() {
 	}
 
 	struct Arista arco;
-	deque<Arista> ladosAdyacentes = obtener_lista_de_sucesores(v);
-	deque<Arista>::iterator it = ladosAdyacentes.begin();
+	priority_queue<struct Arista, std::vector<Arista>, Mycomparison> ladosAdyacentes = obtener_lista_de_sucesores(v);
+	//deque<Arista>::iterator it = ladosAdyacentes.begin();
 
-	while (it != ladosAdyacentes.end()) {
+	while (!ladosAdyacentes.empty()) {
 
-		arco = *it;
+		arco = ladosAdyacentes.top();
+		ladosAdyacentes.pop();
+		
 		if (!ciclo_negativo(arco, solParcial) && !esta_lado_en_solparcial(arco, solParcial)
 		     &&  !repite_ciclo(ladosAdyacentes, arco, solParcial) && cumple_acotamiento(arco, solParcial)) {
 

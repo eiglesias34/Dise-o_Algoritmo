@@ -47,12 +47,68 @@ struct Solucion mejorSol;
 deque<Arista> aristas;
 struct Graph* graph;
 
+// Función template para imprimir una cola.
+template <typename T> void print_queue(T q) {
+    
+    while (!q.empty()) {
+        cout << q.top().nodo1 << " - " << q.top().nodo2 << " b "; 
+        cout << q.top().beneficio << " c " << q.top().costo << endl;
+        q.pop();
+    }
+
+    cout << '\n';
+}
+
+// Función template para buscar un elemento.
+template <typename T> bool find_and_remove(T& q, int nodo) {
+
+	int i = 0;
+	T aux1;
+	T aux2 = q;
+
+	while (!aux2.empty()) {
+		if (nodo == aux2.top().id) {
+			++i;
+		} else {
+			aux1.push(aux2.top());
+		}
+		aux2.pop();
+	}
+
+	if (i) {
+		q.swap(aux1);
+		return true;
+	} else {
+		return false;
+	}
+}
+
+// Clase para comparar dos aristas en la cola de prioridades segun el beeficio.
+class Mycomparison {
+
+	private:
+		bool reverse;
+
+	public:
+		Mycomparison(const bool& param=false) {
+			reverse = param;
+		}
+
+		bool operator() (const struct Arista& arco1, const struct Arista& arco2) const {
+			if (reverse)
+				return (arco1.beneficio - arco1.costo) > (arco2.beneficio - arco2.costo);
+			else
+				return (arco1.beneficio - arco1.costo) < (arco2.beneficio - arco2.costo);
+		}
+};
+
 /* Funciones */
 
-deque<Arista> obtener_lista_de_sucesores(char nodo){
+priority_queue<struct Arista, std::vector<Arista>, Mycomparison> obtener_lista_de_sucesores(char nodo){
 
 	struct AdjListNode* v;
 
+	// Ecnontramos la lista de adyacencia del nodo de entrada.
 	for (int i = 1; i <= graph->V; ++i) {
 
 		if (graph->array[i].nodeid->id == (nodo - '0')) {
@@ -61,17 +117,20 @@ deque<Arista> obtener_lista_de_sucesores(char nodo){
 		}
 	}
 
+	priority_queue<struct Arista, std::vector<Arista>, Mycomparison> pq;
 	deque<Arista> sucesores;
 	struct AdjListNode* next = v->next;
 	
 	while (next != NULL) {
 		Arista lado = extraer_arista(aristas, v->id, next->id);
+		pq.push(lado);
+		pq.push(crear_arista(v->id, next->id, lado.costo, 0));
 		sucesores.push_front(lado);
 		sucesores.push_front(crear_arista(v->id, next->id, lado.costo, 0));
 		next = next->next;
 	}
 
-	return sucesores;
+	return pq;
 }
 
 bool hay_ciclo(struct Arista lado, struct Solucion solucion){
@@ -161,7 +220,7 @@ bool cumple_acotamiento(struct Arista lado, struct Solucion solucion) {
 	return true;
 }
 
-bool repite_ciclo(deque<Arista> adyacentes, struct Arista arista, struct Solucion solucion) {
+bool repite_ciclo(priority_queue<struct Arista, std::vector<Arista>, Mycomparison> adyacentes, struct Arista arista, struct Solucion solucion) {
 
 	return false;
 }
