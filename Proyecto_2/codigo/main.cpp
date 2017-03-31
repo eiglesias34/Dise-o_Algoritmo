@@ -244,10 +244,10 @@ void busquedaEnProfundidad() {
 		ladosAdyacentes.pop();
 		cout << arco.nodo1 << " " << arco.nodo2 << endl;
 		cout << ciclo_negativo(v, arco, solParcial) << endl;
-		cout << esta_lado_en_solparcial(arco, solParcial) << endl;
+		cout << esta_lado_en_solparcial(v, arco, solParcial) << endl;
 		cout << repite_ciclo(ladosAdyacentes, arco, solParcial) << endl;
 		cout << cumple_acotamiento(arco, solParcial) << endl;
-		if (!ciclo_negativo(v, arco, solParcial) && !esta_lado_en_solparcial(arco, solParcial)
+		if (!ciclo_negativo(v, arco, solParcial) && !esta_lado_en_solparcial(v, arco, solParcial)
 		     &&  !repite_ciclo(ladosAdyacentes, arco, solParcial) && cumple_acotamiento(arco, solParcial)) {
 
 			agregar_lado(v, arco, solParcial);

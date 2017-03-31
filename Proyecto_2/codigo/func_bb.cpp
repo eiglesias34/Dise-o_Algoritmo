@@ -203,13 +203,23 @@ bool ciclo_negativo(char nodo, struct Arista lado, struct Solucion solucion){
 	return false;
 }
 
-int arista_pertenece(struct Arista lado, struct Solucion solucion){
+int arista_pertenece(char nodo, struct Arista lado, struct Solucion solucion){
 
 	int count = 0;
 	int i = 0;
+	struct AdjListNode* v;
+	int index = nodo - '0';
+	v = graph->array[index].nodeid;
+	int salida;
+	if (v->id == lado.nodo1)
+	{
+		salida = lado.nodo2;
+	}else{
+		salida = lado.nodo1;
+	}
 	while ((i + 4) < solucion.camino.length())
 	{
-		if (((lado.nodo1 == atoi(solucion.camino.substr(i,1).c_str()))) and ((lado.nodo2 == atoi(solucion.camino.substr(i+4,1).c_str()))))
+		if (((v->id  == atoi(solucion.camino.substr(i,1).c_str()))) and ((salida == atoi(solucion.camino.substr(i+4,1).c_str()))))
 		{
 			count++;
 		}
@@ -219,13 +229,13 @@ int arista_pertenece(struct Arista lado, struct Solucion solucion){
 	return count;
 }
 
-bool esta_lado_en_solparcial(struct Arista lado, struct Solucion solucion){
+bool esta_lado_en_solparcial(char nodo, struct Arista lado, struct Solucion solucion){
 
-	if (arista_pertenece(lado, solucion) == 0) {
+	if (arista_pertenece(nodo, lado, solucion) == 0) {
 		return false;
 	}
 
-	else if (arista_pertenece(lado, solucion) == 1){
+	else if (arista_pertenece(nodo, lado, solucion) == 1){
 		
 		if (lado.beneficio == 0) {
 			return false;
