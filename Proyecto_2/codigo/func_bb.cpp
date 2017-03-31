@@ -154,10 +154,20 @@ priority_queue<struct Arista, vector<Arista>, Mycomparison> obtener_lista_de_suc
 	return pq;
 }
 
-bool hay_ciclo(struct Arista lado, struct Solucion solucion){
+bool hay_ciclo(char nodo, struct Arista lado, struct Solucion solucion){
+	struct AdjListNode* v;
+	int index = nodo - '0';
+	v = graph->array[index].nodeid;
+	int salida;
+	if (v->id == lado.nodo1)
+	{
+		salida = lado.nodo2;
+	}else{
+		salida = lado.nodo1;
+	}
 	int i = 0;
 	while ( i < solucion.camino.length()) {
-		if (lado.nodo2 == atoi(solucion.camino.substr(i,1).c_str())) {
+		if (salida == atoi(solucion.camino.substr(i,1).c_str())) {
 			return true;
 		}
 		i = i + 4;
@@ -184,9 +194,9 @@ bool beneficio_negativo(struct Arista lado, struct Solucion solucion) {
 	return count < 0;
 }
 
-bool ciclo_negativo(struct Arista lado, struct Solucion solucion){
+bool ciclo_negativo(char nodo, struct Arista lado, struct Solucion solucion){
 	
-	if ((hay_ciclo(lado, solucion)) && (beneficio_negativo(lado, solucion))) {
+	if ((hay_ciclo(nodo, lado, solucion)) && (beneficio_negativo(lado, solucion))) {
 		return true;
 	}
 
@@ -249,10 +259,18 @@ bool repite_ciclo(priority_queue<struct Arista, std::vector<Arista>, Mycompariso
 	return false;
 }
 
-void agregar_lado(struct Arista arista, struct Solucion& solucion) {
+void agregar_lado(char nodo, struct Arista arista, struct Solucion& solucion) {
 
+	struct AdjListNode* v;
+	int index = nodo - '0';
+	v = graph->array[index].nodeid;
 	string str = " - ";
-	str.append(to_string(arista.nodo2));
+	if (v->id == arista.nodo1)
+	{
+		str.append(to_string(arista.nodo2));
+	}else{
+		str.append(to_string(arista.nodo1));
+	}
 	solucion.camino.append(str);
 }
 
