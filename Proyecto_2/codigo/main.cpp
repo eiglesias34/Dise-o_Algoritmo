@@ -126,6 +126,7 @@ int main(int argc, char const *argv[]) {
 	//struct Graph* grafo = createGraph(nvertices);
 
 	graph = createGraph(nvertices);
+	struct Graph* grafo_greedy = createGraph(nvertices);
 
 	//deque<Arista> aristas;             // Estructura que almacena las aristas.
 	string number;                       // Variable para chequear que tipo de linea se lee.
@@ -139,8 +140,8 @@ int main(int argc, char const *argv[]) {
 
 			nodo1 = atoi(number.c_str());
 			arch_entrada >> nodo2 >> costo >> beneficio;
-			
 			addEdge(graph, nodo1, nodo2);
+			addEdge(grafo_greedy, nodo1, nodo2);
 			aristas.push_front(crear_arista(nodo1, nodo2, costo, beneficio));
 		}
 
@@ -160,19 +161,17 @@ int main(int argc, char const *argv[]) {
 	struct Graph* grafo = graph;
 	deque<Arista> arcos = aristas;
 
-	cout << graph->array[1].nodeid->id << endl;
-	cout << graph->array[1].nodeid->value << endl;
-	cout << graph->array[1].nodeid->parent << endl;
+	printGraph(graph);
 
-	if (graph->array[1].nodeid->next != NULL) {
-		cout << graph->array[1].nodeid->next->id << endl;
+	if (grafo->array[1].head->next) {
+		cout << graph->array[1].head->next->id << endl;
 	}
 
 	else {
 		cout << "null" << endl << endl;
 	}
 
-	solInicial = hallarCamino_greedy(grafo, arcos, camino, ganancia);
+	solInicial = hallarCamino_greedy(grafo_greedy, arcos, camino, ganancia);
 
 	cout << graph->array[1].nodeid->id << endl;
 	cout << graph->array[1].nodeid->value << endl;
