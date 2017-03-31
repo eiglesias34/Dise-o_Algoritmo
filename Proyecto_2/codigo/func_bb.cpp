@@ -106,6 +106,7 @@ class Mycomparison {
 
 priority_queue<struct Arista, vector<Arista>, Mycomparison> obtener_lista_de_sucesores(char nodo){
 
+
 	struct AdjListNode* v;
 
 	// Encontramos la lista de adyacencia del nodo de entrada.
@@ -118,7 +119,7 @@ priority_queue<struct Arista, vector<Arista>, Mycomparison> obtener_lista_de_suc
 	// }
 
 	int index = nodo - '0';
-	v = graph->array[index].head;
+	v = graph->array[index].nodeid;
 
 	cout << v->id << endl;
 	cout << v->value << endl;
@@ -127,7 +128,7 @@ priority_queue<struct Arista, vector<Arista>, Mycomparison> obtener_lista_de_suc
 
 	//deque<Arista> sucesores;
 	
-	struct AdjListNode* next = v->next;
+	struct AdjListNode* next = graph->array[index].head;
 
 	// if (next == NULL) {
 	// 	cout << "bla" << endl;
@@ -154,12 +155,12 @@ priority_queue<struct Arista, vector<Arista>, Mycomparison> obtener_lista_de_suc
 }
 
 bool hay_ciclo(struct Arista lado, struct Solucion solucion){
-	
-	for (int i = 0; i < solucion.camino.length(); ++i) {
-
+	int i = 0;
+	while ( i < solucion.camino.length()) {
 		if (lado.nodo2 == atoi(solucion.camino.substr(i,1).c_str())) {
 			return true;
 		}
+		i = i + 4;
 	}
 
 	return false;
@@ -168,14 +169,16 @@ bool hay_ciclo(struct Arista lado, struct Solucion solucion){
 bool beneficio_negativo(struct Arista lado, struct Solucion solucion) {
 	
 	int count = lado.costo - lado.beneficio;
-	for (int i = solucion.camino.length()-1; 0 < i; --i) {
-
+	int i = solucion.camino.length()-1;
+	while (0 <= (i - 4)) {
+		cout << solucion.camino.substr(i,1).c_str() << endl;
 		struct Arista a = extraer_arista(aristas, atoi(solucion.camino.substr(i-1,1).c_str()), atoi(solucion.camino.substr(i,1).c_str()));
 		count = count + (a.costo - a.beneficio);
 		
-		if (atoi(solucion.camino.substr(i-1,1).c_str()) == lado.nodo2) {
+		if (atoi(solucion.camino.substr(i-4,1).c_str()) == lado.nodo2) {
 			break;
 		}
+		i = i - 4;
 	}
 
 	return count < 0;
@@ -193,13 +196,14 @@ bool ciclo_negativo(struct Arista lado, struct Solucion solucion){
 int arista_pertenece(struct Arista lado, struct Solucion solucion){
 
 	int count = 0;
-
-	for (int i = 0; i < solucion.camino.length(); ++i)
+	int i = 0;
+	while ((i + 4) < solucion.camino.length())
 	{
-		if (((lado.nodo1 == atoi(solucion.camino.substr(i,1).c_str()))) and ((lado.nodo2 == atoi(solucion.camino.substr(i+1,1).c_str()))))
+		if (((lado.nodo1 == atoi(solucion.camino.substr(i,1).c_str()))) and ((lado.nodo2 == atoi(solucion.camino.substr(i+4,1).c_str()))))
 		{
 			count++;
 		}
+		i = i + 4;
 	}
 
 	return count;
