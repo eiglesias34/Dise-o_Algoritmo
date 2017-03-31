@@ -51,7 +51,7 @@ using namespace std;
 
 void busquedaEnProfundidad(); 
 
-void hallarCamino(struct Graph* graph, struct Solucion solInicial);
+void hallarCamino(struct Solucion solInicial);
 
 /* Programa Principal */
 
@@ -156,11 +156,35 @@ int main(int argc, char const *argv[]) {
 
 	int ganancia = 0;
 	string camino = "";
-	solInicial = hallarCamino_greedy(graph, aristas, camino, ganancia);
+
+	struct Graph* grafo = graph;
+	deque<Arista> arcos = aristas;
+
+	cout << graph->array[1].nodeid->id << endl;
+	cout << graph->array[1].nodeid->value << endl;
+	cout << graph->array[1].nodeid->parent << endl;
+
+	if (graph->array[1].nodeid->next != NULL) {
+		cout << graph->array[1].nodeid->next->id << endl;
+	}
+
+	else {
+		cout << "null" << endl << endl;
+	}
+
+	solInicial = hallarCamino_greedy(grafo, arcos, camino, ganancia);
+
+	cout << graph->array[1].nodeid->id << endl;
+	cout << graph->array[1].nodeid->value << endl;
+	cout << graph->array[1].nodeid->parent << endl;
+
+	//cout << "solInicial" << endl;
+	//cout << solInicial.camino << endl;
+	//cout << solInicial.beneficio << endl;
 
     //Algoritmo 1
 
-    hallarCamino(graph, solInicial);
+    hallarCamino(solInicial);
 
     /* Se escriben los resultados en el archivo de salida. */
 
@@ -181,16 +205,18 @@ int main(int argc, char const *argv[]) {
 	return 0;
 }
 
-void hallarCamino(struct Graph* graph, struct Solucion solInicial) {
+void hallarCamino(struct Solucion solInicial) {
 
+	solParcial.beneficio = 0;
 	solParcial.camino.append("1");
+
 	mejorSol = solInicial;
+
 	beneficioDisponible = obtener_maximo_beneficio(aristas);
-	cout<< beneficioDisponible << endl;	
 	busquedaEnProfundidad();
 
-	cout << "Camino: " << solParcial.camino << endl;
-	cout << "Beneficio: " << solParcial.beneficio << endl;
+	// cout << "Camino: " << solParcial.camino << endl;
+	// cout << "Beneficio: " << solParcial.beneficio << endl;
 }
 
 void busquedaEnProfundidad() {
@@ -205,7 +231,11 @@ void busquedaEnProfundidad() {
 	}
 
 	struct Arista arco;
-	priority_queue<struct Arista, std::vector<Arista>, Mycomparison> ladosAdyacentes = obtener_lista_de_sucesores(v);
+
+	priority_queue<struct Arista, vector<Arista>, Mycomparison> ladosAdyacentes = obtener_lista_de_sucesores(v);
+
+	cout << "Cola Vacia: " << ladosAdyacentes.empty() << endl;
+	
 	//deque<Arista>::iterator it = ladosAdyacentes.begin();
 
 	while (!ladosAdyacentes.empty()) {
@@ -222,6 +252,8 @@ void busquedaEnProfundidad() {
 		}
 	}
 
-	arco = eliminar_ultimo_lado(solParcial);
+	cout << "bla" << endl;
+
+	arco = eliminar_ultimo_lado();
 	beneficioDisponible = beneficioDisponible + max(0, (arco.beneficio - arco.costo));
 }

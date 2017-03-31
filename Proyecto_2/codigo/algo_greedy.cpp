@@ -84,7 +84,7 @@ class Mycomparison_greedy {
 };
 
 
-Solucion hallarCamino_greedy(struct Graph* graph, deque<Arista> aristas, string& camino, int& ganancia) {
+struct Solucion hallarCamino_greedy(struct Graph* graph, deque<Arista> aristas, string& camino, int& ganancia) {
 
 	int last;
 	struct AdjListNode *start;
@@ -108,7 +108,7 @@ Solucion hallarCamino_greedy(struct Graph* graph, deque<Arista> aristas, string&
 	int i = 0;
 	ganancia = 0;
 
-	cout << "1";
+	//cout << "1";
 	camino.append("1");
 
 	while (!pq.empty()) {
@@ -121,7 +121,7 @@ Solucion hallarCamino_greedy(struct Graph* graph, deque<Arista> aristas, string&
 		if (src.parent != 0) {
 			last = src.id;
 			ganancia = ganancia + src.value;
-			cout << " - " <</*src.parent << " - " <<*/ src.id;
+			//cout << " - " <</*src.parent << " - " <<*/ src.id;
 			camino.append(" - ");
 			camino.append(to_string(src.id));
 		}
@@ -203,12 +203,12 @@ Solucion hallarCamino_greedy(struct Graph* graph, deque<Arista> aristas, string&
     while (!vuelta.empty()) {
     	camino.append(" - ");
 		camino.append(to_string(vuelta.front()));
-    	cout << " - " << vuelta.front();
+    	//cout << " - " << vuelta.front();
     	vuelta.pop_front();
     }
 
-	cout << "\n" << endl;
-	cout << "Ganancia: " << ganancia << endl;
+	//cout << "\n" << endl;
+	//cout << "Ganancia: " << ganancia << endl;
 
 	struct Solucion solucion;
 	solucion.beneficio = ganancia;

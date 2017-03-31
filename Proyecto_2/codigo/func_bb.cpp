@@ -104,31 +104,51 @@ class Mycomparison {
 
 /* Funciones */
 
-priority_queue<struct Arista, std::vector<Arista>, Mycomparison> obtener_lista_de_sucesores(char nodo){
+priority_queue<struct Arista, vector<Arista>, Mycomparison> obtener_lista_de_sucesores(char nodo){
 
 	struct AdjListNode* v;
 
-	// Ecnontramos la lista de adyacencia del nodo de entrada.
-	for (int i = 1; i <= graph->V; ++i) {
+	// Encontramos la lista de adyacencia del nodo de entrada.
+	// for (int i = 1; i < graph->V; ++i) {
 
-		if (graph->array[i].nodeid->id == (nodo - '0')) {
-			v = graph->array[i].nodeid;
-			break;
-		}
-	}
+	// 	if (graph->array[i].nodeid->id == (nodo - '0')) {
+	// 		v = graph->array[i].nodeid;
+	// 		break;
+	// 	}
+	// }
 
-	priority_queue<struct Arista, std::vector<Arista>, Mycomparison> pq;
-	deque<Arista> sucesores;
+	int index = nodo - '0';
+	v = graph->array[index].nodeid;
+
+	cout << v->id << endl;
+	cout << v->value << endl;
+	cout << v->parent << endl;
+	//cout << v->id << endl;
+
+	//deque<Arista> sucesores;
+	
 	struct AdjListNode* next = v->next;
+
+	// if (next == NULL) {
+	// 	cout << "bla" << endl;
+	// }
+
+	priority_queue<struct Arista, vector<Arista>, Mycomparison> pq;
 	
 	while (next != NULL) {
-		Arista lado = extraer_arista(aristas, v->id, next->id);
+	
+		struct Arista lado = extraer_arista(aristas, v->id, next->id);
+		
 		pq.push(lado);
 		pq.push(crear_arista(v->id, next->id, lado.costo, 0));
-		sucesores.push_front(lado);
-		sucesores.push_front(crear_arista(v->id, next->id, lado.costo, 0));
+		
+		//sucesores.push_front(lado);
+		//sucesores.push_front(crear_arista(v->id, next->id, lado.costo, 0));
+		
 		next = next->next;
 	}
+
+	//print_queue(pq);
 
 	return pq;
 }
@@ -232,19 +252,25 @@ void agregar_lado(struct Arista arista, struct Solucion& solucion) {
 	solucion.camino.append(str);
 }
 
-struct Arista eliminar_ultimo_lado(struct Solucion& solucion) {
+struct Arista eliminar_ultimo_lado() {
 
 	int nodo1, nodo2;
 	struct Arista arista;
 
+	cout << solParcial.camino.length() << endl;
+
 	//c = solParcial.camino.back();
 
-	nodo2 = solParcial.camino.at(solParcial.camino.length()-1);
-	nodo1 = solParcial.camino.at(solParcial.camino.length()-5);
+	if (solParcial.camino.length() >= 5) {
 
-	solParcial.camino.erase(solParcial.camino.length()-6, 5);
+		nodo2 = solParcial.camino.at(solParcial.camino.length()-1);
 
-	arista = extraer_arista(aristas, nodo1, nodo2);
+		cout << "nodo2 " << nodo2 << endl;
+
+		nodo1 = solParcial.camino.at(solParcial.camino.length()-5);
+		solParcial.camino.erase(solParcial.camino.length()-6, 5);
+		arista = extraer_arista(aristas, nodo1, nodo2);
+	}
 
 	return arista;
 }
