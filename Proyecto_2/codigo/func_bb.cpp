@@ -118,7 +118,7 @@ priority_queue<struct Arista, vector<Arista>, Mycomparison> obtener_lista_de_suc
 	// }
 
 	int index = nodo - '0';
-	v = graph->array[index].nodeid;
+	v = graph->array[index].head;
 
 	cout << v->id << endl;
 	cout << v->value << endl;
@@ -135,7 +135,7 @@ priority_queue<struct Arista, vector<Arista>, Mycomparison> obtener_lista_de_suc
 
 	priority_queue<struct Arista, vector<Arista>, Mycomparison> pq;
 	
-	while (next != NULL) {
+	while (next) {
 	
 		struct Arista lado = extraer_arista(aristas, v->id, next->id);
 		
