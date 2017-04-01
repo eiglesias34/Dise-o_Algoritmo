@@ -165,9 +165,9 @@ priority_queue<struct Arista, vector<Arista>, Mycomparison> obtener_lista_de_suc
 	return pq;
 }
 
-string obtener_primer_nodo(struct Solucion solucion) {
+string obtener_primer_nodo(string camino) {
 	
-	string aux = solucion.camino;
+	string aux = camino;
 
 	char c = camino.front();
 	int i = (int) c;
@@ -176,11 +176,9 @@ string obtener_primer_nodo(struct Solucion solucion) {
 	while ((i > 46) && (i < 58)) {
 
 		aux.erase(0,1);
-		i = aux.pop();
+		i = aux.front();
 		++k;
 	}
-
-	12 - 3
 
 	string out = camino.substr( 0, k );
 	return out;	
@@ -189,12 +187,12 @@ string obtener_primer_nodo(struct Solucion solucion) {
 bool hay_ciclo(char nodo, struct Arista lado, struct Solucion solucion) {
 
 	int len;
-	string aux, nodo;
+	string aux, node;
 
 	aux = solucion.camino;
 
-	nodo = obtener_primer_nodo(aux);
-	len = nodo.length()+3;
+	node = obtener_primer_nodo(aux);
+	len = node.length()+3;
 	aux.erase( 0, len );
 
 	// nodo2 = obtener_primer_nodo(solucion.camino);
@@ -220,12 +218,12 @@ bool hay_ciclo(char nodo, struct Arista lado, struct Solucion solucion) {
 	// Chequea del primer al ultimo nodo en el camino si la arista a introducir forma un ciclo
 	while (aux.length() > 0) {
 
-		if (salida == stoi(nodo)) {
-			return true
+		if (salida == stoi(node)) {
+			return true;
 		}
 
-		nodo = obtener_primer_nodo(aux);
-		len = nodo.length()+3;
+		node = obtener_primer_nodo(aux);
+		len = node.length()+3;
 		aux.erase( 0, len );
 	}
 	
