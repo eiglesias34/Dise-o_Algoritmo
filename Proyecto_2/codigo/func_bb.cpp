@@ -218,25 +218,34 @@ bool beneficio_negativo(string nodo, struct Arista lado, struct Solucion solucio
 	
 	v = graph->array[index].nodeid;
 	
-	int salida;
+	int nodo_dest;
+
 	if (v->id == lado.nodo1) {
 		
-		salida = lado.nodo2;
+		nodo_dest = lado.nodo2;
 	}
 
 	else {
 		
-		salida = lado.nodo1;
+		nodo_dest = lado.nodo1;
 	}
 
 	int b = lado.beneficio - lado.costo;
 	deque<Arista> aux = edges;
 
+	//cout << "beneficio negativo nodo " << nodo << endl;
+
 	while (!aux.empty()) {
 
-		b = b + aux.front().costo;  
+		//cout << "Aux size: " << aux.size() << endl;
 
-		if ( (aux.front().nodo1 == salida) || (aux.front().nodo2 == salida) ) {
+		//cout << "b antes " << b << endl;
+
+		b = b + (aux.front().beneficio - aux.front().costo);
+
+		//cout << "b despues " << b << endl;  
+
+		if ( (aux.front().nodo1 == nodo_dest) || (aux.front().nodo2 == nodo_dest) ) {
 			return (b <= 0);
 		}
 

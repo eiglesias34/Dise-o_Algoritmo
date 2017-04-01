@@ -229,7 +229,7 @@ void busquedaEnProfundidad() {
 		cout << endl;
 		
 		if (!ciclo_negativo(v, arco, solParcial) && !esta_lado_en_solparcial(v, arco, solParcial)
-		     &&  !repite_ciclo(v, ladosAdyacentes, arco, solParcial) && cumple_acotamiento(arco, solParcial)) {
+		     /*&&  !repite_ciclo(v, ladosAdyacentes, arco, solParcial)*/ && cumple_acotamiento(arco, solParcial)) {
 
 			cout << "Enter IF. ";
 			
@@ -239,7 +239,7 @@ void busquedaEnProfundidad() {
 			beneficioDisponible = beneficioDisponible - max(0, (arco.beneficio - arco.costo));
 
 			//sleep(7);
-			//getchar();
+			getchar();
 			
 			busquedaEnProfundidad();
 		}
