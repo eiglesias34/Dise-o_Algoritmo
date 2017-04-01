@@ -105,21 +105,27 @@ class Mycomparison {
 /* Funciones */
 
 void eliminar_arista (Arista a, deque<Arista> lados){
+	
 	struct Arista arco = lados.front();
 	lados.pop_front();
 	deque<Arista> lados2;
+	
 	while(!lados.empty()){
+	
 		if ((arco.nodo1 != a.nodo1) and (arco.nodo2 != a.nodo2)) 
 		{
 			lados2.push_front(arco);
 		}
+	
 		else if ((arco.nodo1 == a.nodo1) and (arco.nodo1 == a.nodo1) and ((a.nodo2 == 1) or (a.nodo1 == 1)))
 		{
 			lados2.push_front(arco);
 		}
+	
 		arco = lados.front();
 	    lados.pop_front();
 	}
+	
 	lados = lados2;
 }
 
@@ -160,24 +166,31 @@ priority_queue<struct Arista, vector<Arista>, Mycomparison> obtener_lista_de_suc
 }
 
 bool hay_ciclo(char nodo, struct Arista lado, struct Solucion solucion){
+	
 	struct AdjListNode* v;
 	int index = nodo - '0';
+	
 	v = graph->array[index].nodeid;
 	int salida;
 	if (v->id == lado.nodo1)
 	{
 		salida = lado.nodo2;
-	}else{
+	}
+
+	else {
 		salida = lado.nodo1;
 	}
+
 	int i = 0;
 	while ( i < solucion.camino.length()) {
+	
 		if (salida == atoi(solucion.camino.substr(i,1).c_str())) {
 			return true;
 		}
+	
 		i = i + 4;
 	}
-
+	
 	return false;
 }
 
@@ -185,14 +198,17 @@ bool beneficio_negativo(struct Arista lado, struct Solucion solucion) {
 	
 	int count = lado.costo - lado.beneficio;
 	int i = solucion.camino.length()-1;
+	
 	while (0 <= (i - 4)) {
-		cout << solucion.camino.substr(i,1).c_str() << endl;
+	
+		//cout << solucion.camino.substr(i,1).c_str() << endl;
 		struct Arista a = extraer_arista(aristas, atoi(solucion.camino.substr(i-1,1).c_str()), atoi(solucion.camino.substr(i,1).c_str()));
 		count = count + (a.costo - a.beneficio);
 		
 		if (atoi(solucion.camino.substr(i-4,1).c_str()) == lado.nodo2) {
 			break;
 		}
+	
 		i = i - 4;
 	}
 
@@ -280,37 +296,76 @@ void agregar_lado(char nodo, struct Arista arista, struct Solucion& solucion) {
 	int index = nodo - '0';
 	v = graph->array[index].nodeid;
 	string str = " - ";
+	
 	if (v->id == arista.nodo1)
 	{
 		str.append(to_string(arista.nodo2));
-	}else{
+	}
+
+	else{
 		str.append(to_string(arista.nodo1));
 	}
+	
 	solucion.camino.append(str);
 	solucion.beneficio = solucion.beneficio + (arista.beneficio - arista.costo);
 	eliminar_arista(arista, aristas);
 }
 
+string obtener_ultimo_nodo(string camino) {
+	
+	string aux = camino;
+
+	char c = camino.back();
+	int i = (int) c;
+
+	int k = 0;
+	while ((i > 46) && (i < 58)) {
+
+		aux.pop_back();
+		i = aux.back();
+		++k;
+	}
+
+	string out = camino.substr( camino.length()-k, k );
+	return out;
+}
+
 struct Arista eliminar_ultimo_lado() {
 
-	int nodo1, nodo2;
+	string nodo1, nodo2;
 	struct Arista arista;
 
-	cout << solParcial.camino.length() << endl;
+	cout << solParcial.camino << endl;
 
 	//c = solParcial.camino.back();
 
-	if (solParcial.camino.length() >= 5) {
+	if (solParcial.camino.length() > 1) {
 
-		nodo2 = solParcial.camino.at(solParcial.camino.length()-1);
+		int len;
 
-		cout << "nodo2 " << nodo2 << endl;
+		nodo2 = obtener_ultimo_nodo(solParcial.camino);
+		len = nodo2.length()+3;
+		cout << len << endl;
+		solParcial.camino.erase( solParcial.camino.length()-1, len );
 
-		nodo1 = solParcial.camino.at(solParcial.camino.length()-5);
-		solParcial.camino.erase(solParcial.camino.length()-6, 5);
-		arista = extraer_arista(aristas, nodo1, nodo2);
+		cout << solParcial.camino << endl;
+
+		nodo1 = obtener_ultimo_nodo(solParcial.camino);
+		len = nodo1.length()+3;
+		cout << len << endl;
+		solParcial.camino.erase( solParcial.camino.length()-1, len );
+
+		//nodo2 = solParcial.camino.at(solParcial.camino.length()-1);
+		//nodo1 = solParcial.camino.at(solParcial.camino.length()-5);
+		//solParcial.camino.erase(solParcial.camino.length()-6, 5);
+
+		cout << endl;
+		cout << "nodo1: " << nodo1 << "nodo2: " << nodo2 << endl;
+		cout << endl;
+		
+		arista = extraer_arista(aristas, stoi(nodo1), stoi(nodo2));
+
 	}
-
 	return arista;
 }
 

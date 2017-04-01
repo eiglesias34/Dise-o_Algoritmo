@@ -208,9 +208,7 @@ void busquedaEnProfundidad() {
 
 	char v = solParcial.camino.back();
 
-	priority_queue<struct Arista, vector<Arista>, Mycomparison> ladosAdyacentes = obtener_lista_de_sucesores(v);
-
-	if (v != '1') {
+	if (v == '1') {
 
 		if (solParcial.beneficio > mejorSol.beneficio) {
 			mejorSol = solParcial;
@@ -218,9 +216,9 @@ void busquedaEnProfundidad() {
 	}
 
 	struct Arista arco;
+	priority_queue<struct Arista, vector<Arista>, Mycomparison> ladosAdyacentes = obtener_lista_de_sucesores(v);
 
-
-	cout << "Cola Vacia: " << ladosAdyacentes.empty() << endl;
+	//cout << "Cola Vacia: " << ladosAdyacentes.empty() << endl;
 	
 	//deque<Arista>::iterator it = ladosAdyacentes.begin();
 
@@ -228,19 +226,25 @@ void busquedaEnProfundidad() {
 
 		arco = ladosAdyacentes.top();
 		ladosAdyacentes.pop();
-		cout << arco.nodo1 << " " << arco.nodo2 << endl;
-		cout << cumple_acotamiento(arco, solParcial) << endl;
+		
+		cout << "arco: " << arco.nodo1 << " " << arco.nodo2 << endl;
+		cout << "acotamieto? " << cumple_acotamiento(arco, solParcial) << endl;
+		cout << endl;
+		
 		if (!ciclo_negativo(v, arco, solParcial) && !esta_lado_en_solparcial(v, arco, solParcial)
 		     &&  !repite_ciclo(ladosAdyacentes, arco, solParcial) && cumple_acotamiento(arco, solParcial)) {
 
+			cout << "Entro. ";
 			agregar_lado(v, arco, solParcial);
+			cout << "solParcial: " <<solParcial.camino << "\n" << endl;
 			beneficioDisponible = beneficioDisponible - max(0, (arco.beneficio - arco.costo));
-			cout << solParcial.camino << endl;
+			//cout << solParcial.camino << endl;
 			busquedaEnProfundidad();
 		}
 	}
 
 	cout << "bla" << endl;
+	cout << "\n\n" << endl;
 
 	arco = eliminar_ultimo_lado();
 	beneficioDisponible = beneficioDisponible + max(0, (arco.beneficio - arco.costo));
