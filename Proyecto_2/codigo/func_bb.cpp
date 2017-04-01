@@ -104,29 +104,15 @@ class Mycomparison {
 
 /* Funciones */
 
-void eliminar_arista (Arista a, deque<Arista> lados){
+void eliminar_arista (Arista a){
 	
-	struct Arista arco = lados.front();
-	lados.pop_front();
-	deque<Arista> lados2;
-	
-	while(!lados.empty()){
-	
-		if ((arco.nodo1 != a.nodo1) and (arco.nodo2 != a.nodo2)) 
+	for (int i = 0; i < edges.size(); ++i)
+	{
+		if (((a.nodo1 == edges[i].nodo1) and (a.nodo2 == edges[i].nodo2)) or ((a.nodo1 == edges[i].nodo2) and (a.nodo2 == edges[i].nodo1)))
 		{
-			lados2.push_front(arco);
+			edges.erase(edges.begin()+i);
 		}
-	
-		else if ((arco.nodo1 == a.nodo1) and (arco.nodo1 == a.nodo1) and ((a.nodo2 == 1) or (a.nodo1 == 1)))
-		{
-			lados2.push_front(arco);
-		}
-	
-		arco = lados.front(); 
-	    lados.pop_front();
 	}
-	
-	lados = lados2;
 }
 
 priority_queue<struct Arista, vector<Arista>, Mycomparison> obtener_lista_de_sucesores(string nodo){
@@ -394,7 +380,7 @@ struct Arista eliminar_ultimo_lado() {
 	
 		cout << "solParcial " << solParcial.camino << "\n" << endl;
 
-		eliminar_arista(arista, edges);
+		eliminar_arista(arista);
 		return arista;
 	}
 
