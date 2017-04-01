@@ -2,13 +2,13 @@
 *   CI5437 - Diseño de Algoritmos I
 *   Trimestre Ene-Mar 2017
 *
-*   Proyecto I
+*   Proyecto II
 *   Archivo con las estructuras para nodos, arcos y grafo.
 * 
 *   Hecho por: Enrique Iglesias 11-10477
 *              Gabriel Iglesias 11-10476
 *
-*   Última modificación: 25/02/17
+*   Última modificación: 31/03/17
 */
 
 #include <cstdlib>

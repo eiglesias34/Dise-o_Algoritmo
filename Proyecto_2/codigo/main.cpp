@@ -8,7 +8,7 @@
 *   Hecho por: Enrique Iglesias 11-10477
 *              Gabriel Iglesias 11-10476
 *
-*   Última modificación: 26/02/17
+*   Última modificación: 01/04/17
 */
 
 #include <cstdlib>
@@ -32,22 +32,6 @@
 using namespace std;
 
 /* Prototypes */
-
-// int obtenerMaximoBeneficio(deque<Arista> lados);
-
-// deque<Arista> obtenerSucesores(deque<Arista> lados);
-
-// bool cicloNegativo(struct Arista arista, struct Solucion solucion);
-
-// bool ladoEnSolParcial(struct Arista arista, struct Solucion solucion);
-
-// bool repiteCiclo(struct Arista arista, struct Solucion solucion);
-
-// bool cumpleAcotamiento(struct Arista arista, struct Solucion solucion);
-
-// struct Arista eliminarUltimoLado(struct Solucion solucion);
-
-// void agregarLado(struct Arista arista, struct Solucion solucion);
 
 void busquedaEnProfundidad(); 
 
@@ -206,10 +190,9 @@ void hallarCamino(struct Solucion solInicial) {
 
 void busquedaEnProfundidad() {
 
-	 
 	string v = obtener_ultimo_nodo(solParcial.camino);
 
-	if (v == to_string(1)) {
+	if ( v.compare(to_string(1)) == 0 ) {
 
 		if (solParcial.beneficio > mejorSol.beneficio) {
 			mejorSol = solParcial;
@@ -219,42 +202,38 @@ void busquedaEnProfundidad() {
 	struct Arista arco;
 	priority_queue<struct Arista, vector<Arista>, Mycomparison> ladosAdyacentes = obtener_lista_de_sucesores(v);
 
-	//cout << "Cola Vacia: " << ladosAdyacentes.empty() << endl;
-	
-	//deque<Arista>::iterator it = ladosAdyacentes.begin();
-
 	while (!ladosAdyacentes.empty()) {
 
 		arco = ladosAdyacentes.top();
 		ladosAdyacentes.pop();
 		
-		cout << "arco: " << arco.nodo1 << " - " << arco.nodo2 << " bn: " <<arco.beneficio - arco.costo <<endl;
-		cout << "acotamieto? " << cumple_acotamiento(arco, solParcial) << endl;
+		cout << "arco: " << arco.nodo1 << " - " << arco.nodo2 << " bn: " << arco.beneficio - arco.costo <<endl;
+		cout << "Cumple acotamieto? " << cumple_acotamiento(arco, solParcial) << endl;
 		cout << endl;
 
-		cout << "esta ya? " << esta_lado_en_solparcial(v, arco, solParcial) << endl;
+		cout << "Esta ya? " << esta_lado_en_solparcial(v, arco, solParcial) << endl;
 		cout << endl;
 
-		cout << "ciclo_negativo? " << ciclo_negativo(v, arco, solParcial) << endl;
+		cout << "Ciclo negativo? " << ciclo_negativo(v, arco, solParcial) << endl;
 		cout << endl;	
 		
 		if (!ciclo_negativo(v, arco, solParcial) && !esta_lado_en_solparcial(v, arco, solParcial)
 		     &&  !repite_ciclo(v, ladosAdyacentes, arco, solParcial) && cumple_acotamiento(arco, solParcial)) {
 
-			cout << "Entro. ";
+			cout << "Enter IF. ";
+			
 			agregar_lado(v, arco, solParcial);
-			cout << "solParcial: " <<solParcial.camino << "\n" << endl;
+			cout << "solParcial: " << solParcial.camino << "\n" << endl;
 			cout << "beneficioParcial: " << solParcial.beneficio << "\n" << endl;
 			beneficioDisponible = beneficioDisponible - max(0, (arco.beneficio - arco.costo));
-			//cout << solParcial.camino << endl;
 
 			//sleep(2);
+			
 			busquedaEnProfundidad();
 		}
 	}
 
-	cout << "bla" << endl;
-	cout << "\n\n" << endl;
+	cout << "Exit while. \n" << endl;
 
 	arco = eliminar_ultimo_lado();
 	beneficioDisponible = beneficioDisponible + max(0, (arco.beneficio - arco.costo));

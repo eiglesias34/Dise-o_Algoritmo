@@ -8,7 +8,7 @@
 *   Hecho por: Enrique Iglesias 11-10477
 *              Gabriel Iglesias 11-10476
 *
-*   Última modificación: 
+*   Última modificación: 01/04/17
 */
 
 
@@ -134,23 +134,8 @@ priority_queue<struct Arista, vector<Arista>, Mycomparison> obtener_lista_de_suc
 
 	struct AdjListNode* v;
 
-	// Encontramos la lista de adyacencia del nodo de entrada.
-	// for (int i = 1; i < graph->V; ++i) {
-
-	// 	if (graph->array[i].nodeid->id == (nodo - '0')) {
-	// 		v = graph->array[i].nodeid;
-	// 		break;
-	// 	}
-	// }
-
 	int index = stoi(nodo);
 	v = graph->array[index].nodeid;
-
-	//cout << v->id << endl;
-
-	//deque<Arista> sucesores;
-	
-
 	priority_queue<struct Arista, vector<Arista>, Mycomparison> pq;
 	
 	for (int i = 0; i < aristas.size(); ++i)
@@ -195,10 +180,6 @@ bool hay_ciclo(string nodo, struct Arista lado, struct Solucion solucion) {
 	len = node.length()+3;
 	aux.erase( 0, len );
 
-	// nodo2 = obtener_primer_nodo(solucion.camino);
-	// len = nodo2.length()+3;
-	// soucion.camino.erase( 0, len );
-	
 	struct AdjListNode* v;
 	int index = stoi(nodo);
 	
@@ -286,37 +267,6 @@ bool arista_pertenece(string nodo, struct Arista lado, struct Solucion solucion)
 	else {
 		return true;
 	}
-
-	// int i = 0;
-	// int count = 0;
-	
-	// struct AdjListNode* v;
-	
-	// int index = nodo - '0';
-	// v = graph->array[index].nodeid;
-	
-	// int salida;
-	// if (v->id == lado.nodo1) {
-	// 	salida = lado.nodo2;
-	// }
-
-	// else {
-	// 	salida = lado.nodo1;
-	// }
-
-	// while ((i + 4) < solucion.camino.length()) {
-		
-	// 	if (( v->id  == atoi(solucion.camino.substr(i,1).c_str()) ) 
-
-	// 		&& (( salida == atoi(solucion.camino.substr(i+4,1).c_str()) ))
-	// 	{
-	// 		count++;
-	// 	}
-
-	// 	i = i + 4;
-	// }
-
-	// return count;
 }
 
 bool esta_lado_en_solparcial(string nodo, struct Arista lado, struct Solucion solucion){
