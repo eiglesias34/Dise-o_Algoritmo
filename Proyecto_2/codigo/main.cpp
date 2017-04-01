@@ -171,7 +171,7 @@ int main(int argc, char const *argv[]) {
 		cout << "null" << endl << endl;
 	}
 
-	//solInicial = hallarCamino_greedy(grafo_greedy, arcos, camino, ganancia);
+	solInicial = hallarCamino_greedy(grafo_greedy, arcos, camino, ganancia);
 
 	cout << graph->array[1].nodeid->id << endl;
 	cout << graph->array[1].nodeid->value << endl;
@@ -224,8 +224,16 @@ void busquedaEnProfundidad() {
 
 	priority_queue<struct Arista, vector<Arista>, Mycomparison> ladosAdyacentes = obtener_lista_de_sucesores(v);
 
-	if ((v != '1')) {
+	if (v != '1') {
 
+		if (solParcial.beneficio > mejorSol.beneficio) {
+			mejorSol = solParcial;
+		}
+	}
+
+	else if ((v == '1') and (solParcial.camino.length() > 1))
+	{
+		cout << "hola" << endl;
 		if (solParcial.beneficio > mejorSol.beneficio) {
 			mejorSol = solParcial;
 		}
