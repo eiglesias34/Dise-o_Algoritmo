@@ -122,7 +122,7 @@ void eliminar_arista (Arista a, deque<Arista> lados){
 			lados2.push_front(arco);
 		}
 	
-		arco = lados.front();
+		arco = lados.front(); 
 	    lados.pop_front();
 	}
 	
@@ -338,7 +338,6 @@ void agregar_lado(string nodo, struct Arista arista, struct Solucion& solucion) 
 	
 	solucion.camino.append(str);
 	solucion.beneficio = solucion.beneficio + (arista.beneficio - arista.costo);
-	eliminar_arista(arista, aristas);
 }
 
 string obtener_ultimo_nodo(string camino) {
@@ -389,15 +388,17 @@ struct Arista eliminar_ultimo_lado() {
 		nodo1 = obtener_ultimo_nodo(solParcial.camino);
 
 		arista = extraer_arista(aristas, stoi(nodo1), stoi(nodo2));
-		
+		solParcial.beneficio = solParcial.beneficio - (arista.beneficio - arista.costo);
 		cout << "nodo1: " << nodo1 << "\n" << "nodo2: " << nodo2 << endl;
 		cout << endl;
 	
 		cout << "solParcial " << solParcial.camino << "\n" << endl;
 
+		eliminar_arista(arista, edges);
 		return arista;
 	}
 
+	return crear_arista(-1, -1, -1, -1);
 	//len = nodo1.length()+3;
 
 	//cout << "length " << solParcial.camino.length() << endl;
