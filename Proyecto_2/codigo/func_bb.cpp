@@ -104,18 +104,23 @@ class Mycomparison {
 
 /* Funciones */
 
-struct Arista sucesor_es_1(priority_queue<struct Arista, vector<Arista>, Mycomparison> sucesores){
-
-	struct Arista arco;
-	while(!sucesores.empty()){
-		arco = sucesores.top();
-		sucesores.pop();
-		if ((arco.nodo1 == 1) or (arco.nodo2 ==2))
+void eliminar_arista (Arista a, deque<Arista> lados){
+	struct Arista arco = lados.front();
+	lados.pop_front();
+	deque<Arista> lados2;
+	while(!lados.empty()){
+		if ((arco.nodo1 != a.nodo1) and (arco.nodo2 != a.nodo2)) 
 		{
-			return arco;
+			lados2.push_front(arco);
 		}
+		else if ((arco.nodo1 == a.nodo1) and (arco.nodo1 == a.nodo1) and ((a.nodo2 == 1) or (a.nodo1 == 1)))
+		{
+			lados2.push_front(arco);
+		}
+		arco = lados.front();
+	    lados.pop_front();
 	}
-	return crear_arista(0,0,0,0);
+	lados = lados2;
 }
 
 priority_queue<struct Arista, vector<Arista>, Mycomparison> obtener_lista_de_sucesores(char nodo){
@@ -135,35 +140,21 @@ priority_queue<struct Arista, vector<Arista>, Mycomparison> obtener_lista_de_suc
 	int index = nodo - '0';
 	v = graph->array[index].nodeid;
 
-	cout << v->id << endl;
-	cout << v->value << endl;
-	cout << v->parent << endl;
 	//cout << v->id << endl;
 
 	//deque<Arista> sucesores;
 	
-	struct AdjListNode* next = graph->array[index].head;
-
-	// if (next == NULL) {
-	// 	cout << "bla" << endl;
-	// }
 
 	priority_queue<struct Arista, vector<Arista>, Mycomparison> pq;
 	
-	while (next) {
-	
-		struct Arista lado = extraer_arista(aristas, v->id, next->id);
-		
-		pq.push(lado);
-		pq.push(crear_arista(v->id, next->id, lado.costo, 0));
-		
-		//sucesores.push_front(lado);
-		//sucesores.push_front(crear_arista(v->id, next->id, lado.costo, 0));
-		
-		next = next->next;
+	for (int i = 0; i < aristas.size(); ++i)
+	{
+		if ((aristas[i].nodo1 == v->id) or (aristas[i].nodo2 == v->id))
+		{
+			pq.push(aristas[i]);
+			pq.push(crear_arista(aristas[i].nodo1, aristas[i].nodo2, aristas[i].costo, 0));
+		}
 	}
-
-	//print_queue(pq);
 
 	return pq;
 }
@@ -297,6 +288,7 @@ void agregar_lado(char nodo, struct Arista arista, struct Solucion& solucion) {
 	}
 	solucion.camino.append(str);
 	solucion.beneficio = solucion.beneficio + (arista.beneficio - arista.costo);
+	eliminar_arista(arista, aristas);
 }
 
 struct Arista eliminar_ultimo_lado() {

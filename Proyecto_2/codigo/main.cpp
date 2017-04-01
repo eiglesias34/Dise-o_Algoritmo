@@ -161,21 +161,7 @@ int main(int argc, char const *argv[]) {
 	struct Graph* grafo = graph;
 	deque<Arista> arcos = aristas;
 
-	printGraph(graph);
-
-	if (grafo->array[1].head->next) {
-		cout << graph->array[1].head->next->id << endl;
-	}
-
-	else {
-		cout << "null" << endl << endl;
-	}
-
 	solInicial = hallarCamino_greedy(grafo_greedy, arcos, camino, ganancia);
-
-	cout << graph->array[1].nodeid->id << endl;
-	cout << graph->array[1].nodeid->value << endl;
-	cout << graph->array[1].nodeid->parent << endl;
 
 	//cout << "solInicial" << endl;
 	//cout << solInicial.camino << endl;
@@ -231,14 +217,6 @@ void busquedaEnProfundidad() {
 		}
 	}
 
-	else if ((v == '1') and (solParcial.camino.length() > 1))
-	{
-		cout << "hola" << endl;
-		if (solParcial.beneficio > mejorSol.beneficio) {
-			mejorSol = solParcial;
-		}
-	}
-
 	struct Arista arco;
 
 
@@ -251,9 +229,6 @@ void busquedaEnProfundidad() {
 		arco = ladosAdyacentes.top();
 		ladosAdyacentes.pop();
 		cout << arco.nodo1 << " " << arco.nodo2 << endl;
-		cout << ciclo_negativo(v, arco, solParcial) << endl;
-		cout << esta_lado_en_solparcial(v, arco, solParcial) << endl;
-		cout << repite_ciclo(ladosAdyacentes, arco, solParcial) << endl;
 		cout << cumple_acotamiento(arco, solParcial) << endl;
 		if (!ciclo_negativo(v, arco, solParcial) && !esta_lado_en_solparcial(v, arco, solParcial)
 		     &&  !repite_ciclo(ladosAdyacentes, arco, solParcial) && cumple_acotamiento(arco, solParcial)) {
