@@ -227,12 +227,18 @@ void busquedaEnProfundidad() {
 		arco = ladosAdyacentes.top();
 		ladosAdyacentes.pop();
 		
-		cout << "arco: " << arco.nodo1 << " " << arco.nodo2 << endl;
+		cout << "arco: " << arco.nodo1 << " - " << arco.nodo2 << " bn: " <<arco.beneficio - arco.costo <<endl;
 		cout << "acotamieto? " << cumple_acotamiento(arco, solParcial) << endl;
 		cout << endl;
+
+		cout << "esta ya? " << esta_lado_en_solparcial(v, arco, solParcial) << endl;
+		cout << endl;
+
+		cout << "ciclo_negativo? " << ciclo_negativo(v, arco, solParcial) << endl;
+		cout << endl;	
 		
 		if (!ciclo_negativo(v, arco, solParcial) && !esta_lado_en_solparcial(v, arco, solParcial)
-		     &&  !repite_ciclo(ladosAdyacentes, arco, solParcial) && cumple_acotamiento(arco, solParcial)) {
+		     /*&&  !repite_ciclo(ladosAdyacentes, arco, solParcial)*/ && cumple_acotamiento(arco, solParcial)) {
 
 			cout << "Entro. ";
 			agregar_lado(v, arco, solParcial);
@@ -241,7 +247,7 @@ void busquedaEnProfundidad() {
 			beneficioDisponible = beneficioDisponible - max(0, (arco.beneficio - arco.costo));
 			//cout << solParcial.camino << endl;
 
-			sleep(5);
+			sleep(3);
 			busquedaEnProfundidad();
 		}
 	}

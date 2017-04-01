@@ -44,7 +44,7 @@ int beneficioDisponible;
 struct Solucion solParcial;
 struct Solucion mejorSol;
 
-deque<Arista> aristas;
+deque<Arista> aristas, edges;
 struct Graph* graph;
 
 // Función template para imprimir una cola.
@@ -165,30 +165,68 @@ priority_queue<struct Arista, vector<Arista>, Mycomparison> obtener_lista_de_suc
 	return pq;
 }
 
-bool hay_ciclo(char nodo, struct Arista lado, struct Solucion solucion){
+string obtener_primer_nodo(struct Solucion solucion) {
+	
+	string aux = solucion.camino;
+
+	char c = camino.front();
+	int i = (int) c;
+
+	int k = 0;
+	while ((i > 46) && (i < 58)) {
+
+		aux.erase(0,1);
+		i = aux.pop();
+		++k;
+	}
+
+	12 - 3
+
+	string out = camino.substr( 0, k );
+	return out;	
+}
+
+bool hay_ciclo(char nodo, struct Arista lado, struct Solucion solucion) {
+
+	int len;
+	string aux, nodo;
+
+	aux = solucion.camino;
+
+	nodo = obtener_primer_nodo(aux);
+	len = nodo.length()+3;
+	aux.erase( 0, len );
+
+	// nodo2 = obtener_primer_nodo(solucion.camino);
+	// len = nodo2.length()+3;
+	// soucion.camino.erase( 0, len );
 	
 	struct AdjListNode* v;
 	int index = nodo - '0';
 	
 	v = graph->array[index].nodeid;
+	
 	int salida;
-	if (v->id == lado.nodo1)
-	{
+	if (v->id == lado.nodo1) {
+		
 		salida = lado.nodo2;
 	}
 
 	else {
+		
 		salida = lado.nodo1;
 	}
 
-	int i = 0;
-	while ( i < solucion.camino.length()) {
-	
-		if (salida == atoi(solucion.camino.substr(i,1).c_str())) {
-			return true;
+	// Chequea del primer al ultimo nodo en el camino si la arista a introducir forma un ciclo
+	while (aux.length() > 0) {
+
+		if (salida == stoi(nodo)) {
+			return true
 		}
-	
-		i = i + 4;
+
+		nodo = obtener_primer_nodo(aux);
+		len = nodo.length()+3;
+		aux.erase( 0, len );
 	}
 	
 	return false;
@@ -224,39 +262,57 @@ bool ciclo_negativo(char nodo, struct Arista lado, struct Solucion solucion){
 	return false;
 }
 
-int arista_pertenece(char nodo, struct Arista lado, struct Solucion solucion){
+bool arista_pertenece(char nodo, struct Arista lado, struct Solucion solucion) {
 
-	int count = 0;
-	int i = 0;
-	struct AdjListNode* v;
-	int index = nodo - '0';
-	v = graph->array[index].nodeid;
-	int salida;
-	if (v->id == lado.nodo1)
-	{
-		salida = lado.nodo2;
-	}else{
-		salida = lado.nodo1;
-	}
-	while ((i + 4) < solucion.camino.length())
-	{
-		if (((v->id  == atoi(solucion.camino.substr(i,1).c_str()))) and ((salida == atoi(solucion.camino.substr(i+4,1).c_str()))))
-		{
-			count++;
-		}
-		i = i + 4;
+	struct Arista a = extraer_arista(edges, lado.nodo1, lado.nodo2);
+
+	if (a.nodo1 == -1) {
+		return false;
 	}
 
-	return count;
+	else {
+		return true;
+	}
+
+	// int i = 0;
+	// int count = 0;
+	
+	// struct AdjListNode* v;
+	
+	// int index = nodo - '0';
+	// v = graph->array[index].nodeid;
+	
+	// int salida;
+	// if (v->id == lado.nodo1) {
+	// 	salida = lado.nodo2;
+	// }
+
+	// else {
+	// 	salida = lado.nodo1;
+	// }
+
+	// while ((i + 4) < solucion.camino.length()) {
+		
+	// 	if (( v->id  == atoi(solucion.camino.substr(i,1).c_str()) ) 
+
+	// 		&& (( salida == atoi(solucion.camino.substr(i+4,1).c_str()) ))
+	// 	{
+	// 		count++;
+	// 	}
+
+	// 	i = i + 4;
+	// }
+
+	// return count;
 }
 
 bool esta_lado_en_solparcial(char nodo, struct Arista lado, struct Solucion solucion){
 
-	if (arista_pertenece(nodo, lado, solucion) == 0) {
+	if (arista_pertenece(nodo, lado, solucion) == false) {
 		return false;
 	}
 
-	else if (arista_pertenece(nodo, lado, solucion) == 1){
+	else if (arista_pertenece(nodo, lado, solucion) == true){
 		
 		if (lado.beneficio == 0) {
 			return false;
@@ -291,6 +347,8 @@ bool repite_ciclo(priority_queue<struct Arista, std::vector<Arista>, Mycompariso
 }
 
 void agregar_lado(char nodo, struct Arista arista, struct Solucion& solucion) {
+
+	edges.push_front(arista);
 
 	struct AdjListNode* v;
 	int index = nodo - '0';

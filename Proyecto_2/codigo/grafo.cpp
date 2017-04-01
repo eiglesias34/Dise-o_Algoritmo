@@ -138,7 +138,13 @@ struct Arista extraer_arista (deque<Arista>& aristas, int nodo1, int nodo2)
             return aristas[i];
         }
     }
-    return Arista();
+
+    struct Arista a;
+    a.nodo1 = -1;
+    a.nodo2 = -1;
+    a.costo = -1;
+    a.beneficio = -1;
+    return a;
 };
 
 void modificar_arista (deque<Arista>& aristas, int nodo1, int nodo2)
