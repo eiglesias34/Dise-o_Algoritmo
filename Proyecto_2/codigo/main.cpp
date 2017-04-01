@@ -171,7 +171,7 @@ int main(int argc, char const *argv[]) {
 		cout << "null" << endl << endl;
 	}
 
-	solInicial = hallarCamino_greedy(grafo_greedy, arcos, camino, ganancia);
+	//solInicial = hallarCamino_greedy(grafo_greedy, arcos, camino, ganancia);
 
 	cout << graph->array[1].nodeid->id << endl;
 	cout << graph->array[1].nodeid->value << endl;
@@ -214,15 +214,17 @@ void hallarCamino(struct Solucion solInicial) {
 	beneficioDisponible = obtener_maximo_beneficio(aristas);
 	busquedaEnProfundidad();
 
-	// cout << "Camino: " << solParcial.camino << endl;
-	// cout << "Beneficio: " << solParcial.beneficio << endl;
+	cout << "Camino: " << mejorSol.camino << endl;
+	cout << "Beneficio: " << mejorSol.beneficio << endl;
 }
 
 void busquedaEnProfundidad() {
 
 	char v = solParcial.camino.back();
 
-	if (v == '1') {
+	priority_queue<struct Arista, vector<Arista>, Mycomparison> ladosAdyacentes = obtener_lista_de_sucesores(v);
+
+	if ((v != '1')) {
 
 		if (solParcial.beneficio > mejorSol.beneficio) {
 			mejorSol = solParcial;
@@ -230,8 +232,6 @@ void busquedaEnProfundidad() {
 	}
 
 	struct Arista arco;
-
-	priority_queue<struct Arista, vector<Arista>, Mycomparison> ladosAdyacentes = obtener_lista_de_sucesores(v);
 
 
 	cout << "Cola Vacia: " << ladosAdyacentes.empty() << endl;

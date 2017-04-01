@@ -104,6 +104,20 @@ class Mycomparison {
 
 /* Funciones */
 
+struct Arista sucesor_es_1(priority_queue<struct Arista, vector<Arista>, Mycomparison> sucesores){
+
+	struct Arista arco;
+	while(!sucesores.empty()){
+		arco = sucesores.top();
+		sucesores.pop();
+		if ((arco.nodo1 == 1) or (arco.nodo2 ==2))
+		{
+			return arco;
+		}
+	}
+	return crear_arista(0,0,0,0);
+}
+
 priority_queue<struct Arista, vector<Arista>, Mycomparison> obtener_lista_de_sucesores(char nodo){
 
 
@@ -282,6 +296,7 @@ void agregar_lado(char nodo, struct Arista arista, struct Solucion& solucion) {
 		str.append(to_string(arista.nodo1));
 	}
 	solucion.camino.append(str);
+	solucion.beneficio = solucion.beneficio + (arista.beneficio - arista.costo);
 }
 
 struct Arista eliminar_ultimo_lado() {
