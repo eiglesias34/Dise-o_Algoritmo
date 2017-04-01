@@ -161,7 +161,7 @@ int main(int argc, char const *argv[]) {
 	struct Graph* grafo = graph;
 	deque<Arista> arcos = aristas;
 
-	solInicial = hallarCamino_greedy(grafo_greedy, arcos, camino, ganancia);
+	//solInicial = hallarCamino_greedy(grafo_greedy, arcos, camino, ganancia);
 
 	//cout << "solInicial" << endl;
 	//cout << solInicial.camino << endl;
@@ -243,11 +243,11 @@ void busquedaEnProfundidad() {
 			cout << "Entro. ";
 			agregar_lado(v, arco, solParcial);
 			cout << "solParcial: " <<solParcial.camino << "\n" << endl;
-			cout << "beneficioParcia: " << solParcial.beneficio << "\n" << endl;
+			cout << "beneficioParcial: " << solParcial.beneficio << "\n" << endl;
 			beneficioDisponible = beneficioDisponible - max(0, (arco.beneficio - arco.costo));
 			//cout << solParcial.camino << endl;
 
-			sleep(3);
+			//sleep(2);
 			busquedaEnProfundidad();
 		}
 	}

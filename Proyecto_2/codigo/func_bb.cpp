@@ -230,30 +230,45 @@ bool hay_ciclo(char nodo, struct Arista lado, struct Solucion solucion) {
 	return false;
 }
 
-bool beneficio_negativo(struct Arista lado, struct Solucion solucion) {
+bool beneficio_negativo(char nodo, struct Arista lado, struct Solucion solucion) {
 	
-	int count = lado.costo - lado.beneficio;
-	int i = solucion.camino.length()-1;
+	struct AdjListNode* v;
+	int index = nodo - '0';
 	
-	while (0 <= (i - 4)) {
+	v = graph->array[index].nodeid;
 	
-		//cout << solucion.camino.substr(i,1).c_str() << endl;
-		struct Arista a = extraer_arista(aristas, atoi(solucion.camino.substr(i-1,1).c_str()), atoi(solucion.camino.substr(i,1).c_str()));
-		count = count + (a.costo - a.beneficio);
+	int salida;
+	if (v->id == lado.nodo1) {
 		
-		if (atoi(solucion.camino.substr(i-4,1).c_str()) == lado.nodo2) {
-			break;
-		}
-	
-		i = i - 4;
+		salida = lado.nodo2;
 	}
 
-	return count < 0;
+	else {
+		
+		salida = lado.nodo1;
+	}
+
+	int b = lado.beneficio - lado.costo;
+	deque<Arista> aux = edges;
+
+	while (!aux.empty()) {
+
+		b = b + aux.front().costo;  
+
+		if ( (aux.front().nodo1 == salida) || (aux.front().nodo2 == salida) ) {
+			return (b <= 0);
+		}
+
+		aux.pop_front();
+	}
+
+	// No hay ciclo.
+	return false;
 }
 
 bool ciclo_negativo(char nodo, struct Arista lado, struct Solucion solucion){
 	
-	if ((hay_ciclo(nodo, lado, solucion)) && (beneficio_negativo(lado, solucion))) {
+	if ((hay_ciclo(nodo, lado, solucion)) && (beneficio_negativo(nodo,lado, solucion))) {
 		return true;
 	}
 
@@ -409,7 +424,14 @@ struct Arista eliminar_ultimo_lado() {
 		nodo1 = obtener_ultimo_nodo(solParcial.camino);
 		len = nodo1.length()+3;
 		cout << len << endl;
-		solParcial.camino.erase( solParcial.camino.length()-len, len );
+
+		if (solParcial.camino.length()-len > -1) {
+			solParcial.camino.erase( solParcial.camino.length()-len, len );
+		}
+
+		else {
+			solParcial.camino.erase( 0, len );
+		}
 
 		//nodo2 = solParcial.camino.at(solParcial.camino.length()-1);
 		//nodo1 = solParcial.camino.at(solParcial.camino.length()-5);
