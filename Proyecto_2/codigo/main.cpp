@@ -204,10 +204,18 @@ void busquedaEnProfundidad() {
 
 	while (!ladosAdyacentes.empty()) {
 
+		cout << "----------------------------------------\n" << endl;
+
+		cout << "Enter while de " << v << endl;
+
 		arco = ladosAdyacentes.top();
 		ladosAdyacentes.pop();
 		
-		cout << "arco: " << arco.nodo1 << " - " << arco.nodo2 << " bn: " << arco.beneficio - arco.costo <<endl;
+		cout << "arco: " << arco.nodo1 << " - " << arco.nodo2;
+		cout << " / ";
+		cout << "arco: " << arco.nodo2 << " - " << arco.nodo1;
+		cout << " bn: " << arco.beneficio - arco.costo <<endl;
+
 		cout << "Cumple acotamieto? " << cumple_acotamiento(arco, solParcial) << endl;
 		cout << endl;
 
@@ -215,7 +223,10 @@ void busquedaEnProfundidad() {
 		cout << endl;
 
 		cout << "Ciclo negativo? " << ciclo_negativo(v, arco, solParcial) << endl;
-		cout << endl;	
+		cout << endl;
+
+		cout << "Repite ciclo? " << repite_ciclo(v, ladosAdyacentes, arco, solParcial) << endl;	
+		cout << endl;
 		
 		if (!ciclo_negativo(v, arco, solParcial) && !esta_lado_en_solparcial(v, arco, solParcial)
 		     &&  !repite_ciclo(v, ladosAdyacentes, arco, solParcial) && cumple_acotamiento(arco, solParcial)) {
@@ -227,7 +238,8 @@ void busquedaEnProfundidad() {
 			cout << "beneficioParcial: " << solParcial.beneficio << "\n" << endl;
 			beneficioDisponible = beneficioDisponible - max(0, (arco.beneficio - arco.costo));
 
-			//sleep(2);
+			//sleep(7);
+			//getchar();
 			
 			busquedaEnProfundidad();
 		}
