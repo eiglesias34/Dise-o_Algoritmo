@@ -192,12 +192,12 @@ bool hay_ciclo(char nodo, struct Arista lado, struct Solucion solucion){
 
 bool beneficio_negativo(struct Arista lado, struct Solucion solucion) {
 	
-	int count = lado.beneficio - lado.costo;
+	int count = lado.costo - lado.beneficio;
 	int i = solucion.camino.length()-1;
 	while (0 <= (i - 4)) {
 		cout << solucion.camino.substr(i,1).c_str() << endl;
 		struct Arista a = extraer_arista(aristas, atoi(solucion.camino.substr(i-1,1).c_str()), atoi(solucion.camino.substr(i,1).c_str()));
-		count = count + (a.beneficio - a.costo);
+		count = count + (a.costo - a.beneficio);
 		
 		if (atoi(solucion.camino.substr(i-4,1).c_str()) == lado.nodo2) {
 			break;
