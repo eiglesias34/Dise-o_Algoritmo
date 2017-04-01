@@ -346,14 +346,14 @@ struct Arista eliminar_ultimo_lado() {
 		nodo2 = obtener_ultimo_nodo(solParcial.camino);
 		len = nodo2.length()+3;
 		cout << len << endl;
-		solParcial.camino.erase( solParcial.camino.length()-1, len );
+		solParcial.camino.erase( solParcial.camino.length()-len, len );
 
 		cout << solParcial.camino << endl;
 
 		nodo1 = obtener_ultimo_nodo(solParcial.camino);
 		len = nodo1.length()+3;
 		cout << len << endl;
-		solParcial.camino.erase( solParcial.camino.length()-1, len );
+		solParcial.camino.erase( solParcial.camino.length()-len, len );
 
 		//nodo2 = solParcial.camino.at(solParcial.camino.length()-1);
 		//nodo1 = solParcial.camino.at(solParcial.camino.length()-5);

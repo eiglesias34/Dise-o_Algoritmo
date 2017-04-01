@@ -237,8 +237,11 @@ void busquedaEnProfundidad() {
 			cout << "Entro. ";
 			agregar_lado(v, arco, solParcial);
 			cout << "solParcial: " <<solParcial.camino << "\n" << endl;
+			cout << "beneficioParcia: " << solParcial.beneficio << "\n" << endl;
 			beneficioDisponible = beneficioDisponible - max(0, (arco.beneficio - arco.costo));
 			//cout << solParcial.camino << endl;
+
+			sleep(5);
 			busquedaEnProfundidad();
 		}
 	}
