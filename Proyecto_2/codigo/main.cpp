@@ -206,9 +206,10 @@ void hallarCamino(struct Solucion solInicial) {
 
 void busquedaEnProfundidad() {
 
-	char v = solParcial.camino.back();
+	 
+	string v = obtener_ultimo_nodo(solParcial.camino);
 
-	if (v == '1') {
+	if (v == to_string(1)) {
 
 		if (solParcial.beneficio > mejorSol.beneficio) {
 			mejorSol = solParcial;
@@ -238,7 +239,7 @@ void busquedaEnProfundidad() {
 		cout << endl;	
 		
 		if (!ciclo_negativo(v, arco, solParcial) && !esta_lado_en_solparcial(v, arco, solParcial)
-		     /*&&  !repite_ciclo(ladosAdyacentes, arco, solParcial)*/ && cumple_acotamiento(arco, solParcial)) {
+		     &&  !repite_ciclo(v, ladosAdyacentes, arco, solParcial) && cumple_acotamiento(arco, solParcial)) {
 
 			cout << "Entro. ";
 			agregar_lado(v, arco, solParcial);

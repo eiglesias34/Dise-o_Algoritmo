@@ -129,7 +129,7 @@ void eliminar_arista (Arista a, deque<Arista> lados){
 	lados = lados2;
 }
 
-priority_queue<struct Arista, vector<Arista>, Mycomparison> obtener_lista_de_sucesores(char nodo){
+priority_queue<struct Arista, vector<Arista>, Mycomparison> obtener_lista_de_sucesores(string nodo){
 
 
 	struct AdjListNode* v;
@@ -143,7 +143,7 @@ priority_queue<struct Arista, vector<Arista>, Mycomparison> obtener_lista_de_suc
 	// 	}
 	// }
 
-	int index = nodo - '0';
+	int index = stoi(nodo);
 	v = graph->array[index].nodeid;
 
 	//cout << v->id << endl;
@@ -184,7 +184,7 @@ string obtener_primer_nodo(string camino) {
 	return out;	
 }
 
-bool hay_ciclo(char nodo, struct Arista lado, struct Solucion solucion) {
+bool hay_ciclo(string nodo, struct Arista lado, struct Solucion solucion) {
 
 	int len;
 	string aux, node;
@@ -200,7 +200,7 @@ bool hay_ciclo(char nodo, struct Arista lado, struct Solucion solucion) {
 	// soucion.camino.erase( 0, len );
 	
 	struct AdjListNode* v;
-	int index = nodo - '0';
+	int index = stoi(nodo);
 	
 	v = graph->array[index].nodeid;
 	
@@ -230,10 +230,10 @@ bool hay_ciclo(char nodo, struct Arista lado, struct Solucion solucion) {
 	return false;
 }
 
-bool beneficio_negativo(char nodo, struct Arista lado, struct Solucion solucion) {
+bool beneficio_negativo(string nodo, struct Arista lado, struct Solucion solucion) {
 	
 	struct AdjListNode* v;
-	int index = nodo - '0';
+	int index = stoi(nodo);
 	
 	v = graph->array[index].nodeid;
 	
@@ -266,7 +266,7 @@ bool beneficio_negativo(char nodo, struct Arista lado, struct Solucion solucion)
 	return false;
 }
 
-bool ciclo_negativo(char nodo, struct Arista lado, struct Solucion solucion){
+bool ciclo_negativo(string nodo, struct Arista lado, struct Solucion solucion){
 	
 	if ((hay_ciclo(nodo, lado, solucion)) && (beneficio_negativo(nodo,lado, solucion))) {
 		return true;
@@ -275,7 +275,7 @@ bool ciclo_negativo(char nodo, struct Arista lado, struct Solucion solucion){
 	return false;
 }
 
-bool arista_pertenece(char nodo, struct Arista lado, struct Solucion solucion) {
+bool arista_pertenece(string nodo, struct Arista lado, struct Solucion solucion) {
 
 	struct Arista a = extraer_arista(edges, lado.nodo1, lado.nodo2);
 
@@ -319,7 +319,7 @@ bool arista_pertenece(char nodo, struct Arista lado, struct Solucion solucion) {
 	// return count;
 }
 
-bool esta_lado_en_solparcial(char nodo, struct Arista lado, struct Solucion solucion){
+bool esta_lado_en_solparcial(string nodo, struct Arista lado, struct Solucion solucion){
 
 	if (arista_pertenece(nodo, lado, solucion) == false) {
 		return false;
@@ -354,17 +354,17 @@ bool cumple_acotamiento(struct Arista lado, struct Solucion solucion) {
 	return true;
 }
 
-bool repite_ciclo(priority_queue<struct Arista, std::vector<Arista>, Mycomparison> adyacentes, struct Arista arista, struct Solucion solucion) {
+bool repite_ciclo(string nodo, priority_queue<struct Arista, std::vector<Arista>, Mycomparison> adyacentes, struct Arista arista, struct Solucion solucion) {
 
-	return false;
+	return hay_ciclo(nodo, arista, solucion);
 }
 
-void agregar_lado(char nodo, struct Arista arista, struct Solucion& solucion) {
+void agregar_lado(string nodo, struct Arista arista, struct Solucion& solucion) {
 
 	edges.push_front(arista);
 
 	struct AdjListNode* v;
-	int index = nodo - '0';
+	int index = stoi(nodo);
 	v = graph->array[index].nodeid;
 	string str = " - ";
 	
