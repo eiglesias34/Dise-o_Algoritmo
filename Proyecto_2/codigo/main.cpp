@@ -157,13 +157,13 @@ int main(int argc, char const *argv[]) {
 
     /* Se escriben los resultados en el archivo de salida. */
 
-	//arch_salida << "Ganancia" << " " << ganancia << endl;
-	//arch_salida << "Camino:" << " " << camino << endl;
+	arch_salida << "Camino:" << " " << mejorSol.camino << endl;
+	arch_salida << "Beneficio:" << " " << mejorSol.beneficio << endl;
 
 	time(&fin);         // obtiene el tiempo al finalizar el programa.
 	seconds = difftime(fin, inicio);
 
-	arch_salida << "Tiempo:" << " " << seconds << endl;
+	arch_salida << "Tiempo: " << seconds << " segundo(s)" << endl;
 
 	// Cierre de archivos.
 	arch_entrada.close();
