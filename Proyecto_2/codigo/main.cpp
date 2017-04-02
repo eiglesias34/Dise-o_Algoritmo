@@ -100,8 +100,8 @@ int main(int argc, char const *argv[]) {
 
 	struct Solucion solInicial;
 
-	solInicial.camino = "1 - 2 - 5 - 4 - 3 - 2 - 1";
-	solInicial.beneficio = 14;
+	//solInicial.camino = "1 - 2 - 5 - 4 - 3 - 2 - 1";
+	//solInicial.beneficio = 14;
 
 	/*-----------------------------------------------------*/
 
@@ -145,7 +145,7 @@ int main(int argc, char const *argv[]) {
 	struct Graph* grafo = graph;
 	deque<Arista> arcos = aristas;
 
-	//solInicial = hallarCamino_greedy(grafo_greedy, arcos, camino, ganancia);
+	solInicial = hallarCamino_greedy(grafo_greedy, arcos, camino, ganancia);
 
 	//cout << "solInicial" << endl;
 	//cout << solInicial.camino << endl;
@@ -225,21 +225,24 @@ void busquedaEnProfundidad() {
 		cout << "Ciclo negativo? " << ciclo_negativo(v, arco, solParcial) << endl;
 		cout << endl;
 
-		cout << "Repite ciclo? " << repite_ciclo(v, ladosAdyacentes, arco, solParcial) << endl;	
+		cout << "Hay ciclo? " << repite_ciclo(v, ladosAdyacentes, arco, solParcial) << endl;	
 		cout << endl;
 		
 		if (!ciclo_negativo(v, arco, solParcial) && !esta_lado_en_solparcial(v, arco, solParcial)
 		     /*&&  !repite_ciclo(v, ladosAdyacentes, arco, solParcial)*/ && cumple_acotamiento(arco, solParcial)) {
 
-			cout << "Enter IF. ";
+			cout << "Enter IF. " << endl;
 			
+			cout << "beneficioParcial antes de agregar: " << solParcial.beneficio << "\n" << endl;
 			agregar_lado(v, arco, solParcial);
 			cout << "solParcial: " << solParcial.camino << "\n" << endl;
-			cout << "beneficioParcial: " << solParcial.beneficio << "\n" << endl;
+			cout << "beneficioParcial despues de agregar: " << solParcial.beneficio << "\n" << endl;
+			
 			beneficioDisponible = beneficioDisponible - max(0, (arco.beneficio - arco.costo));
+			cout << "beneficioDisponible: " << beneficioDisponible << endl;
 
 			//sleep(7);
-			getchar();
+			//getchar();
 			
 			busquedaEnProfundidad();
 		}
@@ -247,6 +250,12 @@ void busquedaEnProfundidad() {
 
 	cout << "Exit while. \n" << endl;
 
+	cout << "beneficioParcial antes de eliminar: " << solParcial.beneficio << endl; 
+	cout << "beneficioDisponible antes de eliminar: " << beneficioDisponible << endl;
+
 	arco = eliminar_ultimo_lado();
 	beneficioDisponible = beneficioDisponible + max(0, (arco.beneficio - arco.costo));
+
+	cout << "beneficioParcial despues de eliminar: " << solParcial.beneficio << endl; 
+	cout << "beneficioDisponible despues de eliminar: " << beneficioDisponible << endl;
 }

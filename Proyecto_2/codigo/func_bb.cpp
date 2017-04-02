@@ -219,17 +219,17 @@ bool beneficio_negativo(string nodo, struct Arista lado, struct Solucion solucio
 	int b = lado.beneficio - lado.costo;
 	deque<Arista> aux = edges;
 
-	//cout << "beneficio negativo nodo " << nodo << endl;
+	cout << "beneficio negativo nodo " << nodo << endl;
 
 	while (!aux.empty()) {
 
-		//cout << "Aux size: " << aux.size() << endl;
+		cout << "Aux size: " << aux.size() << endl;
 
-		//cout << "b antes " << b << endl;
+		cout << "b antes " << b << endl;
 
 		b = b + (aux.front().beneficio - aux.front().costo);
 
-		//cout << "b despues " << b << endl;  
+		cout << "b despues " << b << endl;  
 
 		if ( (aux.front().nodo1 == nodo_dest) || (aux.front().nodo2 == nodo_dest) ) {
 			return (b <= 0);
@@ -290,7 +290,7 @@ bool cumple_acotamiento(struct Arista lado, struct Solucion solucion) {
 	
 	int beneficioE = lado.beneficio - lado.costo;
 	int beneficioSolParcial = solucion.beneficio + beneficioE;
-	int maxBeneficio = beneficioDisponible -  max(0, beneficioE) + beneficioSolParcial;
+	int maxBeneficio = (beneficioDisponible -  max(0, beneficioE)) + beneficioSolParcial;
 	
 	if (maxBeneficio <= mejorSol.beneficio)	{
 		return false;
@@ -373,14 +373,17 @@ struct Arista eliminar_ultimo_lado() {
 	if (solParcial.camino.length() > 0) {
 		nodo1 = obtener_ultimo_nodo(solParcial.camino);
 
-		arista = extraer_arista(aristas, stoi(nodo1), stoi(nodo2));
-		solParcial.beneficio = solParcial.beneficio - (arista.beneficio - arista.costo);
+		//arista = extraer_arista(aristas, stoi(nodo1), stoi(nodo2));
+		
 		cout << "nodo1: " << nodo1 << "\n" << "nodo2: " << nodo2 << endl;
 		cout << endl;
-	
 		cout << "solParcial " << solParcial.camino << "\n" << endl;
 
-		eliminar_arista(arista);
+		arista = edges.front();
+		edges.pop_front();
+		solParcial.beneficio = solParcial.beneficio - (arista.beneficio - arista.costo);
+
+		//eliminar_arista(arista);
 		return arista;
 	}
 
