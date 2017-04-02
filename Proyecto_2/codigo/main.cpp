@@ -204,42 +204,42 @@ void busquedaEnProfundidad() {
 
 	while (!ladosAdyacentes.empty()) {
 
-		cout << "----------------------------------------\n" << endl;
+		// cout << "----------------------------------------\n" << endl;
 
-		cout << "Enter while de " << v << endl;
+		// cout << "Enter while de " << v << endl;
 
 		arco = ladosAdyacentes.top();
 		ladosAdyacentes.pop();
 		
-		cout << "arco: " << arco.nodo1 << " - " << arco.nodo2;
-		cout << " / ";
-		cout << "arco: " << arco.nodo2 << " - " << arco.nodo1;
-		cout << " bn: " << arco.beneficio - arco.costo <<endl;
+		// cout << "arco: " << arco.nodo1 << " - " << arco.nodo2;
+		// cout << " / ";
+		// cout << "arco: " << arco.nodo2 << " - " << arco.nodo1;
+		// cout << " bn: " << arco.beneficio - arco.costo <<endl;
 
-		cout << "Cumple acotamieto? " << cumple_acotamiento(arco, solParcial) << endl;
-		cout << endl;
+		// cout << "Cumple acotamieto? " << cumple_acotamiento(arco, solParcial) << endl;
+		// cout << endl;
 
-		cout << "Esta ya? " << esta_lado_en_solparcial(v, arco, solParcial) << endl;
-		cout << endl;
+		// cout << "Esta ya? " << esta_lado_en_solparcial(v, arco, solParcial) << endl;
+		// cout << endl;
 
-		cout << "Ciclo negativo? " << ciclo_negativo(v, arco, solParcial) << endl;
-		cout << endl;
+		// cout << "Ciclo negativo? " << ciclo_negativo(v, arco, solParcial) << endl;
+		// cout << endl;
 
-		cout << "Hay ciclo? " << repite_ciclo(v, ladosAdyacentes, arco, solParcial) << endl;	
-		cout << endl;
+		// cout << "Hay ciclo? " << repite_ciclo(v, ladosAdyacentes, arco, solParcial) << endl;	
+		// cout << endl;
 		
 		if (!ciclo_negativo(v, arco, solParcial) && !esta_lado_en_solparcial(v, arco, solParcial)
 		     /*&&  !repite_ciclo(v, ladosAdyacentes, arco, solParcial)*/ && cumple_acotamiento(arco, solParcial)) {
 
-			cout << "Enter IF. " << endl;
+			//cout << "Enter IF. " << endl;
 			
-			cout << "beneficioParcial antes de agregar: " << solParcial.beneficio << "\n" << endl;
+			//cout << "beneficioParcial antes de agregar: " << solParcial.beneficio << "\n" << endl;
 			agregar_lado(v, arco, solParcial);
-			cout << "solParcial: " << solParcial.camino << "\n" << endl;
-			cout << "beneficioParcial despues de agregar: " << solParcial.beneficio << "\n" << endl;
+			//cout << "solParcial: " << solParcial.camino << "\n" << endl;
+			//cout << "beneficioParcial despues de agregar: " << solParcial.beneficio << "\n" << endl;
 			
 			beneficioDisponible = beneficioDisponible - max(0, (arco.beneficio - arco.costo));
-			cout << "beneficioDisponible: " << beneficioDisponible << endl;
+			//cout << "beneficioDisponible: " << beneficioDisponible << endl;
 
 			//sleep(7);
 			//getchar();
@@ -248,14 +248,14 @@ void busquedaEnProfundidad() {
 		}
 	}
 
-	cout << "Exit while. \n" << endl;
+	//cout << "Exit while. \n" << endl;
 
-	cout << "beneficioParcial antes de eliminar: " << solParcial.beneficio << endl; 
-	cout << "beneficioDisponible antes de eliminar: " << beneficioDisponible << endl;
+	//cout << "beneficioParcial antes de eliminar: " << solParcial.beneficio << endl; 
+	//cout << "beneficioDisponible antes de eliminar: " << beneficioDisponible << endl;
 
 	arco = eliminar_ultimo_lado();
 	beneficioDisponible = beneficioDisponible + max(0, (arco.beneficio - arco.costo));
 
-	cout << "beneficioParcial despues de eliminar: " << solParcial.beneficio << endl; 
-	cout << "beneficioDisponible despues de eliminar: " << beneficioDisponible << endl;
+	//cout << "beneficioParcial despues de eliminar: " << solParcial.beneficio << endl; 
+	//cout << "beneficioDisponible despues de eliminar: " << beneficioDisponible << endl;
 }

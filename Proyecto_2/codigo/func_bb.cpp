@@ -219,17 +219,17 @@ bool beneficio_negativo(string nodo, struct Arista lado, struct Solucion solucio
 	int b = lado.beneficio - lado.costo;
 	deque<Arista> aux = edges;
 
-	cout << "beneficio negativo nodo " << nodo << endl;
+	//cout << "beneficio negativo nodo " << nodo << endl;
 
 	while (!aux.empty()) {
 
-		cout << "Aux size: " << aux.size() << endl;
+		//cout << "Aux size: " << aux.size() << endl;
 
-		cout << "b antes " << b << endl;
+		//cout << "b antes " << b << endl;
 
 		b = b + (aux.front().beneficio - aux.front().costo);
 
-		cout << "b despues " << b << endl;  
+		//cout << "b despues " << b << endl;  
 
 		if ( (aux.front().nodo1 == nodo_dest) || (aux.front().nodo2 == nodo_dest) ) {
 			return (b <= 0);
@@ -351,7 +351,7 @@ struct Arista eliminar_ultimo_lado() {
 	string nodo1, nodo2;
 	struct Arista arista;
 
-	cout << "Sol. antes de borrar: " <<solParcial.camino << endl;
+	//cout << "Sol. antes de borrar: " <<solParcial.camino << endl;
 
 	nodo2 = obtener_ultimo_nodo(solParcial.camino);
 	len = nodo2.length()+3;
@@ -368,16 +368,16 @@ struct Arista eliminar_ultimo_lado() {
 	}
 
 	//cout << "length " << solParcial.camino.length() << endl;
-	cout << "Sol. despues de borrar: " << solParcial.camino << "\n" << endl;
+	//cout << "Sol. despues de borrar: " << solParcial.camino << "\n" << endl;
 
 	if (solParcial.camino.length() > 0) {
 		nodo1 = obtener_ultimo_nodo(solParcial.camino);
 
 		//arista = extraer_arista(aristas, stoi(nodo1), stoi(nodo2));
 		
-		cout << "nodo1: " << nodo1 << "\n" << "nodo2: " << nodo2 << endl;
-		cout << endl;
-		cout << "solParcial " << solParcial.camino << "\n" << endl;
+		//cout << "nodo1: " << nodo1 << "\n" << "nodo2: " << nodo2 << endl;
+		//cout << endl;
+		//cout << "solParcial " << solParcial.camino << "\n" << endl;
 
 		arista = edges.front();
 		edges.pop_front();
@@ -388,22 +388,6 @@ struct Arista eliminar_ultimo_lado() {
 	}
 
 	return crear_arista(-1, -1, -1, -1);
-	//len = nodo1.length()+3;
-
-	//cout << "length " << solParcial.camino.length() << endl;
-	//cout << "length " << solParcial.camino.length() - len << endl;
-
-	// if ( (solParcial.camino.length() - len) >= 0 ) {
-
-	// 	cout << "\nif" << endl;
-	// 	solParcial.camino.erase( solParcial.camino.length()-len, len );
-	// }
-
-	// else {
-
-	// 	cout << "\nelse" << endl;
-	// 	solParcial.camino.erase( 0, len-3 );
-	// }
 }
 
 int obtener_maximo_beneficio(deque<Arista> lados) {
